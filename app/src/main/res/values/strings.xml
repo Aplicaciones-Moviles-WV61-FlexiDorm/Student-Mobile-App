@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FlexiStudentMobileApp</string>
+    <string name="error_input_empty">Los campos no pueden estar vacios</string>
+    <string name="error_not_a_valid_email">Por favor, ingrese un correo valido</string>
+    <string name="error_not_a_valid_phone_number">Por favor, ingrese un numero de telefono valido</string>
+    <string name="error_incorrectly_repeated_password">Las contraseñas no coinciden</string>
+    <string name="error_invalid_credentials">El correo o contraseña es incorrecto</string>
+    <string name="success_registration">Nuevo usuario registrado exitosamente</string>
+    <string name="success_login">Inicio de sesión exitoso</string>
+    <string name="error_unknown">Un error desconocido ocurrio</string>
+</resources>
