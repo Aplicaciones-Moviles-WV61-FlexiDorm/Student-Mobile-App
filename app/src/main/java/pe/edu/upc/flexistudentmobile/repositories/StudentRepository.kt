@@ -21,9 +21,6 @@ class StudentRepository  (
         requestSignUpStudentBody: RequestSignUpStudentBody,
         callback: (ApiResponse?, Int?, String?) -> Unit
     ) {
-
-        println("El email es: " + requestSignUpStudentBody.email)
-
         val call = studentService.signUpStudent(requestSignUpStudentBody)
 
         call.enqueue(object : Callback<ApiResponse> {
@@ -94,8 +91,8 @@ class StudentRepository  (
                 student.profilePicture,
                 student.gender,
                 student.university,
-                student.verified,
                 student.token,
+                student.verifier
             )
         )
     }

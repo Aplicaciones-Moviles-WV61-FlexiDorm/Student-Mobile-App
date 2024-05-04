@@ -9,7 +9,7 @@ class AppDatabaseFactory{
 
         fun getAppDatabase(context: Context): AppDatabase {
             if(appDatabase == null){
-                appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, "flexistudentDb")
+                appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, "flexistudent_Database")
                     .allowMainThreadQueries().build()
             }
             return appDatabase as AppDatabase

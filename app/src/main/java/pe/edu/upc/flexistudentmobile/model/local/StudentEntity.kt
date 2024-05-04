@@ -5,9 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "student")
 data class StudentEntity(
-    @PrimaryKey
-    val id: String,
-
+    @PrimaryKey val id: String,
     val username: String,
     val firstname: String,
     val lastname: String,
@@ -18,6 +16,6 @@ data class StudentEntity(
     val profilePicture: String,
     val gender: String?,
     val university: String,
-    val verifier: Boolean,
     val token:String,
+    val verifier: Boolean
 )

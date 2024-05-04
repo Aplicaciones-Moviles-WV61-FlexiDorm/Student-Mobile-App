@@ -21,8 +21,8 @@ data class Student(
     val birthDate: String,
     val profilePicture: String,
     val university: String,
-    val verified: Boolean,
-    val token: String,
+    val verifier: Boolean,
+    val token: String
 )
 
 data class RequestSignUpStudentState(
@@ -49,12 +49,12 @@ data class RequestSignUpStudentBody(
     var birthDate: String,
     var profilePicture: String,
     var gender: String,
-    var university: String,
+    var university: String
 )
 
 data class RequestSignInStudentState(
-    var email: String = "",
-    var password: String = ""
+    var email: MutableState<String> = mutableStateOf(""),
+    var password: MutableState<String> = mutableStateOf("")
 )
 
 data class RequestSignInStudentBody(

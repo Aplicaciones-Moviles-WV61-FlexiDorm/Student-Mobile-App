@@ -1,6 +1,6 @@
 package pe.edu.upc.flexistudentmobile.ui.screens.signin
 
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pe.edu.upc.flexistudentmobile.R
-import pe.edu.upc.flexistudentmobile.factories.repositories.StudentRepositoryFactory
+import pe.edu.upc.flexistudentmobile.factories.student.repositories.StudentRepositoryFactory
 import pe.edu.upc.flexistudentmobile.model.data.RequestSignInStudentBody
 import pe.edu.upc.flexistudentmobile.model.data.RequestSignInStudentState
 import pe.edu.upc.flexistudentmobile.shared.MessageError
@@ -107,10 +107,9 @@ fun SignInScreen(errorMessageModel: MutableState<String?>, sinUpFirstStep:()->Un
                         )
 
                         OutlinedTextField(
-                            value = email.value,
+                            value = requestSignInStudentState.email.value,
                             onValueChange = {
-                                email.value = it
-                                requestSignInStudentState.email = it
+                                requestSignInStudentState.email.value = it
                             },
                             placeholder = {
                                 Text("Correo electronico",
@@ -136,10 +135,9 @@ fun SignInScreen(errorMessageModel: MutableState<String?>, sinUpFirstStep:()->Un
                             style = TextStyle(color = MaterialTheme.colorScheme.primary)
                         )
                         OutlinedTextField(
-                            value = password.value,
+                            value = requestSignInStudentState.password.value,
                             onValueChange = {
-                                password.value = it
-                                requestSignInStudentState.password = it
+                                requestSignInStudentState.password.value = it
                             },
                             placeholder = {
                                 Text("Ingresa tu contraseña",
@@ -171,16 +169,16 @@ fun SignInScreen(errorMessageModel: MutableState<String?>, sinUpFirstStep:()->Un
                         onClick = {
 
                             if(
-                                email.value.isEmpty() ||
-                                password.value.isEmpty()
+                                requestSignInStudentState.email.value.isEmpty() ||
+                                requestSignInStudentState.password.value.isEmpty()
                             ){
                                 errorMessageModel.value= "Los campos no pueden estar vacios"
                                 return@Button
                             }
 
                             val body = RequestSignInStudentBody (
-                                email = email.value,
-                                password = password.value
+                                email = requestSignInStudentState.email.value,
+                                password = requestSignInStudentState.password.value
                             )
 
                             val studentRepository= StudentRepositoryFactory.getStudentRepository("")
@@ -188,11 +186,25 @@ fun SignInScreen(errorMessageModel: MutableState<String?>, sinUpFirstStep:()->Un
 
                             studentRepository.signInStudent(body){apiResponse, errorCode, errorBody ->
                                 if (apiResponse != null) {
-                                    var studentEntity = apiResponse.data
+                                    val studentEntity = apiResponse.data
                                     studentRepository.deleteAllStudentDataLocal()
+
+                                    if(studentRepository.getStudentDataLocal(studentEntity.userId.toString())==null){
+
+                                        studentRepository.insertStudentDataLocal(
+                                            studentEntity
+                                        )
+
+                                        signInSuccessful()
+
+                                    }else{
+                                        studentRepository.deleteAllStudentDataLocal()
+                                    }
+
                                 } else {
                                     errorMessageModel.value = errorBody
                                     println("Error: Código de estado: $errorCode, Cuerpo del error: $errorBody")
+
                                 }
                             }
                         }

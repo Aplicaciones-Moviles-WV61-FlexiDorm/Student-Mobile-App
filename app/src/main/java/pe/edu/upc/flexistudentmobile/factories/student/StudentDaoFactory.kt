@@ -1,4 +1,4 @@
-package pe.edu.upc.flexistudentmobile.factories
+package pe.edu.upc.flexistudentmobile.factories.student
 import pe.edu.upc.flexistudentmobile.MyApplication
 import pe.edu.upc.flexistudentmobile.core_database.AppDatabaseFactory
 import pe.edu.upc.flexistudentmobile.model.local.StudentDao

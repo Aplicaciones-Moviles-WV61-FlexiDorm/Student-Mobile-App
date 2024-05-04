@@ -7,9 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pe.edu.upc.flexistudentmobile.model.data.RequestSignUpStudentState
+import pe.edu.upc.flexistudentmobile.ui.room.roomlist.RoomList
 import pe.edu.upc.flexistudentmobile.ui.screens.signin.SignInScreen
-import pe.edu.upc.flexistudentmobile.ui.screens.signin.SignUpFirstScreen
-import pe.edu.upc.flexistudentmobile.ui.screens.signin.SignUpSecondScreen
+import pe.edu.upc.flexistudentmobile.ui.screens.signup.SignUpFirstScreen
+import pe.edu.upc.flexistudentmobile.ui.screens.signup.SignUpSecondScreen
 
 @Composable
 fun Home(){
@@ -17,7 +18,7 @@ fun Home(){
     val requestSignUpStudent = RequestSignUpStudentState()
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
-    NavHost(navController = navController, startDestination=Routes.SignIn.route){
+    NavHost(navController = navController, startDestination=Routes.SignUpFirstStep.route){
         composable(Routes.SignUpFirstStep.route){
             SignUpFirstScreen(
                 requestSignUpStudent,
@@ -48,9 +49,13 @@ fun Home(){
                     navController.navigate(Routes.SignUpFirstStep.route)
                 },
                 signInSuccessful={
-                    //navController.navigate(Routes.RoomList.route)
+                    navController.navigate(Routes.RoomList.route)
                 }
             )
+        }
+
+        composable(Routes.RoomList.route){
+            RoomList()
         }
     }
 }
@@ -59,4 +64,6 @@ sealed class Routes(val route:String){
     data object SignIn: Routes("SignIn")
     data object SignUpFirstStep: Routes("SignUpFirstStep")
     data object SignUpSecondStep: Routes("SignUpSecondStep")
+
+    data object RoomList: Routes("RoomList")
 }

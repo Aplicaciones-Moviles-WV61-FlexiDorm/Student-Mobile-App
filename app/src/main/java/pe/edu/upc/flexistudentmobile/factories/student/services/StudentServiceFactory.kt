@@ -1,4 +1,4 @@
-package pe.edu.upc.flexistudentmobile.factories.services
+package pe.edu.upc.flexistudentmobile.factories.student.services
 
 import pe.edu.upc.flexistudentmobile.factories.RetrofitFactory
 import pe.edu.upc.flexistudentmobile.model.remote.StudentService

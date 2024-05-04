@@ -1,4 +1,4 @@
-package pe.edu.upc.flexistudentmobile.ui.screens.signin
+package pe.edu.upc.flexistudentmobile.ui.screens.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,7 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pe.edu.upc.flexistudentmobile.factories.repositories.StudentRepositoryFactory
+import pe.edu.upc.flexistudentmobile.factories.student.repositories.StudentRepositoryFactory
 import pe.edu.upc.flexistudentmobile.model.data.RequestSignUpStudentBody
 import pe.edu.upc.flexistudentmobile.model.data.RequestSignUpStudentState
 import pe.edu.upc.flexistudentmobile.shared.MessageError
@@ -235,7 +235,7 @@ fun SignUpFirstScreen (
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpSecondScreen (
-    requestSignUpArrenderState: RequestSignUpStudentState,
+    requestSignUpStudentState: RequestSignUpStudentState,
     errorMessageModel: MutableState<String?>,
     pressOnBack:()->Unit,
     navigationToSignIn:()->Unit
@@ -291,9 +291,9 @@ fun SignUpSecondScreen (
                     )
 
                     OutlinedTextField(
-                        value = requestSignUpArrenderState.firstname.value,
+                        value = requestSignUpStudentState.firstname.value,
                         onValueChange = {
-                            requestSignUpArrenderState.firstname.value = it
+                            requestSignUpStudentState.firstname.value = it
                         },
                         modifier=Modifier.height(60.dp),
                         textStyle = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 15.sp),
@@ -311,9 +311,9 @@ fun SignUpSecondScreen (
                     )
 
                     OutlinedTextField(
-                        value = requestSignUpArrenderState.lastname.value,
+                        value = requestSignUpStudentState.lastname.value,
                         onValueChange = {
-                            requestSignUpArrenderState.lastname.value = it
+                            requestSignUpStudentState.lastname.value = it
                         },
                         modifier=Modifier.height(60.dp),
                         textStyle = TextStyle(
@@ -333,12 +333,43 @@ fun SignUpSecondScreen (
                     )
 
                     OutlinedTextField(
-                        value = requestSignUpArrenderState.phoneNumber.value,
+                        value = requestSignUpStudentState.username.value,
                         onValueChange = {
-                            requestSignUpArrenderState.phoneNumber.value = it
+                            requestSignUpStudentState.username.value = it
                         },
                         modifier=Modifier.height(60.dp),
-                        textStyle = TextStyle(color = Color(0xFF846CD9), fontSize = 15.sp),
+                        textStyle = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 15.sp),
+                        label = { Text("Username", color = MaterialTheme.colorScheme.primary) },
+                        shape = RoundedCornerShape(15.dp),
+                        singleLine = true,
+                        colors=OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                        )
+                    )
+
+                    OutlinedTextField(
+                        value = requestSignUpStudentState.university.value,
+                        onValueChange = {
+                            requestSignUpStudentState.university.value = it
+                        },
+                        modifier=Modifier.height(60.dp),
+                        textStyle = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 15.sp),
+                        label = { Text("Universidad", color = MaterialTheme.colorScheme.primary) },
+                        shape = RoundedCornerShape(15.dp),
+                        singleLine = true,
+                        colors=OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                        )
+                    )
+
+
+                    OutlinedTextField(
+                        value = requestSignUpStudentState.phoneNumber.value,
+                        onValueChange = {
+                            requestSignUpStudentState.phoneNumber.value = it
+                        },
+                        modifier=Modifier.height(60.dp),
+                        textStyle = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 15.sp),
                         label = { Text("Celular", color = MaterialTheme.colorScheme.primary) },
                         shape = RoundedCornerShape(15.dp),
                         singleLine = true,
@@ -404,7 +435,7 @@ fun SignUpSecondScreen (
                             if (year.value != 0 && month.value != 0 && day.value != 0) {
                                 val formattedDay = day.value.toString().padStart(2, '0')
                                 val formattedMonth = month.value.toString().padStart(2, '0')
-                                requestSignUpArrenderState.birthDate.value = "${year.value}-$formattedMonth-$formattedDay"
+                                requestSignUpStudentState.birthDate.value = "${year.value}-$formattedMonth-$formattedDay"
                                 Text(text = "$formattedDay-$formattedMonth-${year.value}",style= TextStyle(fontSize = (13.sp), color = Color(0xFF846CD9)))
                             }
 
@@ -477,7 +508,9 @@ fun SignUpSecondScreen (
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    requestSignUpArrenderState.gender.value=selectedOption.value
+                    requestSignUpStudentState.gender.value=selectedOption.value
+                    requestSignUpStudentState.address.value = "unknow"
+
 
                     Button(
                         colors = ButtonDefaults.buttonColors(
@@ -485,16 +518,18 @@ fun SignUpSecondScreen (
                             containerColor = MaterialTheme.colorScheme.primary
                         ),
                         onClick = {
+
                             if (
-                                requestSignUpArrenderState.firstname.value.isEmpty() ||
-                                requestSignUpArrenderState.lastname.value.isEmpty() ||
-                                requestSignUpArrenderState.username.value.isEmpty() ||
-                                requestSignUpArrenderState.phoneNumber.value.isEmpty() ||
-                                requestSignUpArrenderState.email.value.isEmpty() ||
-                                requestSignUpArrenderState.password.value.isEmpty() ||
-                                requestSignUpArrenderState.address.value.isEmpty() ||
-                                requestSignUpArrenderState.birthDate.value.isEmpty() ||
-                                requestSignUpArrenderState.gender.value.isEmpty()
+                                requestSignUpStudentState.firstname.value.isEmpty() ||
+                                requestSignUpStudentState.lastname.value.isEmpty() ||
+                                requestSignUpStudentState.username.value.isEmpty() ||
+                                requestSignUpStudentState.phoneNumber.value.isEmpty() ||
+                                requestSignUpStudentState.email.value.isEmpty() ||
+                                requestSignUpStudentState.password.value.isEmpty() ||
+                                requestSignUpStudentState.address.value.isEmpty() ||
+                                requestSignUpStudentState.birthDate.value.isEmpty() ||
+                                requestSignUpStudentState.gender.value.isEmpty() ||
+                                requestSignUpStudentState.university.value.isEmpty()
                             ) {
                                 errorMessageModel.value = "Por favor, llena todos los campos"
                                 dialogTitle.value="Espera un momento!"
@@ -502,23 +537,23 @@ fun SignUpSecondScreen (
                             }
 
                             val body = RequestSignUpStudentBody(
-                                firstname = requestSignUpArrenderState.firstname.value,
-                                lastname = requestSignUpArrenderState.lastname.value,
-                                username = requestSignUpArrenderState.username.value,
-                                phoneNumber = requestSignUpArrenderState.phoneNumber.value,
-                                email = requestSignUpArrenderState.email.value,
-                                password = requestSignUpArrenderState.password.value,
-                                address = requestSignUpArrenderState.address.value,
-                                birthDate = requestSignUpArrenderState.birthDate.value,
-                                profilePicture = requestSignUpArrenderState.profilePicture.value,
-                                gender = requestSignUpArrenderState.gender.value,
-                                university = requestSignUpArrenderState.university.value
+                                firstname = requestSignUpStudentState.firstname.value,
+                                lastname = requestSignUpStudentState.lastname.value,
+                                username = requestSignUpStudentState.username.value,
+                                phoneNumber = requestSignUpStudentState.phoneNumber.value,
+                                email = requestSignUpStudentState.email.value,
+                                password = requestSignUpStudentState.password.value,
+                                address = requestSignUpStudentState.address.value,
+                                birthDate = requestSignUpStudentState.birthDate.value,
+                                profilePicture = requestSignUpStudentState.profilePicture.value,
+                                gender = requestSignUpStudentState.gender.value,
+                                university = requestSignUpStudentState.university.value
                             )
 
 
-                            val arrenderRepository= StudentRepositoryFactory.getStudentRepository("")
+                            val studentRepository= StudentRepositoryFactory.getStudentRepository("")
 
-                            arrenderRepository.signUpStudent(body) { apiResponse, errorCode, errorBody ->
+                            studentRepository.signUpStudent(body) { apiResponse, errorCode, errorBody ->
                                 if (apiResponse != null) {
                                     dialogTitle.value="En hora buena!"
                                     errorMessageModel.value = "Tu registro se completo con exito"
@@ -553,4 +588,5 @@ fun SignUpSecondScreen (
 
 
 }
+
 

@@ -1,7 +1,7 @@
-package pe.edu.upc.flexistudentmobile.factories.repositories
+package pe.edu.upc.flexistudentmobile.factories.student.repositories
 
-import pe.edu.upc.flexistudentmobile.factories.StudentDaoFactory
-import pe.edu.upc.flexistudentmobile.factories.services.StudentServiceFactory
+import pe.edu.upc.flexistudentmobile.factories.student.StudentDaoFactory
+import pe.edu.upc.flexistudentmobile.factories.student.services.StudentServiceFactory
 import pe.edu.upc.flexistudentmobile.repositories.StudentRepository
 
 class StudentRepositoryFactory {
