@@ -43,37 +43,15 @@ fun RoomList() {
         mutableStateOf(true)
     }
 
-    LaunchedEffect(Unit) {
-        try {
-            val studentRepository = StudentRepositoryFactory.getStudentRepository("")
-            val dataLocalStudent = studentRepository.getStudent()
-            val roomRepository = RoomRepositoryFactory.getRoomRepositoryFactory(dataLocalStudent[0].token)
+    val studentRepository = StudentRepositoryFactory.getStudentRepository("")
+    val dataLocalStudent = studentRepository.getStudent()
+    val roomRepository = RoomRepositoryFactory.getRoomRepositoryFactory(dataLocalStudent[0].token)
 
-            val tempList = mutableListOf<Room>()
-            var roomId = 1L
+    val tempList = mutableListOf<Room>()
+    var roomId = 1L
+    var fetching  = true
 
-            while (true) {
-                roomRepository.getRoomsById(roomId) { response, _, _ ->
-                    if (response != null) {
-                        tempList.addAll(response.data)
-                        roomId++
-                    } else {
-                        isFetchingRooms.value = false
-                    }
-                }
-            }
-            roomList.value = tempList
-        } catch (e: Exception) {
-            // Manejar errores aquí
-        } finally {
-            isFetchingRooms.value = false
-        }
-    }
-
-
-    Scaffold {
-        if (isFetchingRooms.value) {
-        } else {
+    Scaffold { paddingValues ->
             if (roomList.value.isEmpty()) {
                 Text(
                     text = "No hay habitaciones disponibles",
@@ -81,12 +59,11 @@ fun RoomList() {
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     ),
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(paddingValues)
                 )
             } else {
                 RoomListById(roomList)
             }
-        }
     }
 
 }

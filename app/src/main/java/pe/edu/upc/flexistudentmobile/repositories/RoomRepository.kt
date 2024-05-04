@@ -24,7 +24,6 @@ class RoomRepository (
                     val apiResponseRoom = response.body()
                     val statusCode= response.code()
                     callback(apiResponseRoom, statusCode, null)
-
                 } else {
                     val errorCode = response.code()
                     val errorBody = response.errorBody()?.string()
