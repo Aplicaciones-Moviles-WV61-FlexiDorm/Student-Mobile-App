@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 class RoomRepository (
     private val roomService: RoomService,
@@ -15,23 +16,25 @@ class RoomRepository (
         roomId:Long,
         callback: (ApiResponseRoomList?, Int?, String?) -> Unit
     ) {
-        val call = roomService.getRoomsByRoomId("Bearer $token",roomId)
+        val call = roomService.getRoomsByRoomId("Bearer $token", roomId)
 
         call.enqueue(object : Callback<ApiResponseRoomList> {
             override fun onResponse(call: Call<ApiResponseRoomList>, response: Response<ApiResponseRoomList>) {
                 if (response.isSuccessful) {
-
                     val apiResponseRoom = response.body()
+                    println("API Response: $apiResponseRoom")
                     val statusCode= response.code()
                     callback(apiResponseRoom, statusCode, null)
                 } else {
                     val errorCode = response.code()
                     val errorBody = response.errorBody()?.string()
+                    println("API Error: Code: $errorCode, Body: $errorBody")
                     callback(null, errorCode, errorBody)
                 }
             }
 
             override fun onFailure(call: Call<ApiResponseRoomList>, t: Throwable) {
+                println("API Failure: ${t.message}")
                 var errorCode = -1
                 if (t is HttpException) {
                     errorCode = t.code()

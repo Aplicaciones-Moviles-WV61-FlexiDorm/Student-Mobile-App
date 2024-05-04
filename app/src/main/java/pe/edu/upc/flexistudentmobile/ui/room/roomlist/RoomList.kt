@@ -28,9 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import pe.edu.upc.flexistudentmobile.factories.room.RoomRepositoryFactory
 import pe.edu.upc.flexistudentmobile.factories.student.repositories.StudentRepositoryFactory
+import pe.edu.upc.flexistudentmobile.model.data.ApiResponseRoomList
 import pe.edu.upc.flexistudentmobile.model.data.Room
+import pe.edu.upc.flexistudentmobile.repositories.RoomRepository
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -43,15 +51,30 @@ fun RoomList() {
         mutableStateOf(true)
     }
 
-    val studentRepository = StudentRepositoryFactory.getStudentRepository("")
-    val dataLocalStudent = studentRepository.getStudent()
-    val roomRepository = RoomRepositoryFactory.getRoomRepositoryFactory(dataLocalStudent[0].token)
 
-    val tempList = mutableListOf<Room>()
-    var roomId = 1L
-    var fetching  = true
 
-    Scaffold { paddingValues ->
+
+    Scaffold(
+
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            /*
+            roomListById.getRoomsById(15) {  apiResponseRoom, errorCode, status ->
+                if (apiResponseRoom != null) {
+                    roomList.value = apiResponseRoom.data
+                } else {
+                    println("error: $status")
+                }
+            }
+             */
+            fetchRooms(roomList, isFetchingRooms)
+
             if (roomList.value.isEmpty()) {
                 Text(
                     text = "No hay habitaciones disponibles",
@@ -59,13 +82,13 @@ fun RoomList() {
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     ),
-                    modifier = Modifier.padding(paddingValues)
+                    modifier = Modifier.padding(10.dp)
                 )
             } else {
                 RoomListById(roomList)
             }
+        }
     }
-
 }
 
 @Composable
@@ -118,4 +141,34 @@ fun roomImage(url: String, size: Dp){
         imageOptions= ImageOptions(contentScale= ContentScale.Crop),
         modifier= Modifier.size(size)
     )
+}
+
+
+fun fetchRooms(roomList: MutableState<List<Room>>, isFetchingRooms: MutableState<Boolean>) {
+    isFetchingRooms.value = true
+    val maxRoomId = 20L
+    val tempList = mutableListOf<Room>()
+
+    val studentRepository = StudentRepositoryFactory.getStudentRepository("")
+    val dataLocalStudent = studentRepository.getStudent()
+    val roomListById = RoomRepositoryFactory.getRoomRepositoryFactory(dataLocalStudent[0].token)
+
+    var fetchedRoomsCount = 0L
+
+    for (roomId in 1..maxRoomId) {
+        roomListById.getRoomsById(roomId) { apiResponseRoom, errorCode, status ->
+            if (apiResponseRoom != null) {
+                tempList.addAll(apiResponseRoom.data)
+            } else {
+                println("Error fetching room with ID $roomId: $status")
+            }
+
+            fetchedRoomsCount++
+            if (fetchedRoomsCount == maxRoomId) {
+                roomList.value = tempList.toList()
+                isFetchingRooms.value = false
+            }
+        }
+    }
+
 }
