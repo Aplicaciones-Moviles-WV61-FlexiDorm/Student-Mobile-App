@@ -1,5 +1,6 @@
 package pe.edu.upc.flexistudentmobile.ui.room.roomlist
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,58 +32,60 @@ import pe.edu.upc.flexistudentmobile.factories.room.RoomRepositoryFactory
 import pe.edu.upc.flexistudentmobile.factories.student.repositories.StudentRepositoryFactory
 import pe.edu.upc.flexistudentmobile.model.data.Room
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RoomList() {
     val roomList = remember {
-        mutableStateOf(listOf<Room>())
+        mutableStateOf<List<Room>>(emptyList())
     }
-    var roomId = 1
 
     val isFetchingRooms = remember {
         mutableStateOf(true)
     }
 
-    Scaffold(
-
-    ) {
-        Column (
-            modifier = Modifier.padding(it).fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
+    LaunchedEffect(Unit) {
+        try {
             val studentRepository = StudentRepositoryFactory.getStudentRepository("")
             val dataLocalStudent = studentRepository.getStudent()
             val roomRepository = RoomRepositoryFactory.getRoomRepositoryFactory(dataLocalStudent[0].token)
 
             val tempList = mutableListOf<Room>()
+            var roomId = 1L
 
-            while (isFetchingRooms.value) {
-                roomRepository.getRoomsById(roomId.toLong()) { response, _, _ ->
+            while (true) {
+                roomRepository.getRoomsById(roomId) { response, _, _ ->
                     if (response != null) {
                         tempList.addAll(response.data)
                         roomId++
                     } else {
-                        isFetchingRooms.value = !isFetchingRooms.value
+                        isFetchingRooms.value = false
                     }
                 }
             }
+            roomList.value = tempList
+        } catch (e: Exception) {
+            // Manejar errores aquí
+        } finally {
+            isFetchingRooms.value = false
+        }
+    }
 
-            roomList.value = tempList.toList()
 
-
-            if(roomList.value.isEmpty()){
+    Scaffold {
+        if (isFetchingRooms.value) {
+        } else {
+            if (roomList.value.isEmpty()) {
                 Text(
                     text = "No hay habitaciones disponibles",
-                    style= TextStyle(
+                    style = TextStyle(
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     ),
-                    modifier=Modifier.padding(10.dp)
+                    modifier = Modifier.padding(10.dp)
                 )
-            }else{
+            } else {
                 RoomListById(roomList)
             }
-
         }
     }
 

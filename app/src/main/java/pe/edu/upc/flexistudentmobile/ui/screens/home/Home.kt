@@ -18,7 +18,7 @@ fun Home(){
     val requestSignUpStudent = RequestSignUpStudentState()
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
-    NavHost(navController = navController, startDestination=Routes.SignUpFirstStep.route){
+    NavHost(navController = navController, startDestination=Routes.SignIn.route){
         composable(Routes.SignUpFirstStep.route){
             SignUpFirstScreen(
                 requestSignUpStudent,

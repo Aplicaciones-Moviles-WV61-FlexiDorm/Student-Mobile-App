@@ -536,36 +536,42 @@ fun SignUpSecondScreen (
                                 return@Button
                             }
 
-                            val body = RequestSignUpStudentBody(
-                                firstname = requestSignUpStudentState.firstname.value,
-                                lastname = requestSignUpStudentState.lastname.value,
-                                username = requestSignUpStudentState.username.value,
-                                phoneNumber = requestSignUpStudentState.phoneNumber.value,
-                                email = requestSignUpStudentState.email.value,
-                                password = requestSignUpStudentState.password.value,
-                                address = requestSignUpStudentState.address.value,
-                                birthDate = requestSignUpStudentState.birthDate.value,
-                                profilePicture = requestSignUpStudentState.profilePicture.value,
-                                gender = requestSignUpStudentState.gender.value,
-                                university = requestSignUpStudentState.university.value
-                            )
+                            try {
+                                val body = RequestSignUpStudentBody(
+                                    firstname = requestSignUpStudentState.firstname.value,
+                                    lastname = requestSignUpStudentState.lastname.value,
+                                    username = requestSignUpStudentState.username.value,
+                                    phoneNumber = requestSignUpStudentState.phoneNumber.value,
+                                    email = requestSignUpStudentState.email.value,
+                                    password = requestSignUpStudentState.password.value,
+                                    address = requestSignUpStudentState.address.value,
+                                    birthDate = requestSignUpStudentState.birthDate.value,
+                                    profilePicture = requestSignUpStudentState.profilePicture.value,
+                                    gender = requestSignUpStudentState.gender.value,
+                                    university = requestSignUpStudentState.university.value
+                                )
 
 
-                            val studentRepository= StudentRepositoryFactory.getStudentRepository("")
+                                val studentRepository= StudentRepositoryFactory.getStudentRepository("")
 
-                            studentRepository.signUpStudent(body) { apiResponse, errorCode, errorBody ->
-                                if (apiResponse != null) {
-                                    dialogTitle.value="En hora buena!"
-                                    errorMessageModel.value = "Tu registro se completo con exito"
-                                    navigationToSignIn()
-                                    println("Respuesta exitosa: $apiResponse")
-                                } else {
-                                    dialogTitle.value="Espera!"
-                                    errorMessageModel.value = errorBody
-                                    println("Error: Código de estado: $errorCode, Cuerpo del error: $errorBody")
+                                studentRepository.signUpStudent(body) { apiResponse, errorCode, errorBody ->
+                                    if (apiResponse != null) {
+                                        //dialogTitle.value="En hora buena!"
+                                        //errorMessageModel.value = "Tu registro se completo con exito"
+                                        navigationToSignIn()
+                                    } else {
+                                        //dialogTitle.value="Espera!"
+                                        errorMessageModel.value = errorBody
+                                    }
                                 }
                             }
-                        }) {
+                            catch (e: Exception) {
+                                errorMessageModel.value = "Error al registrar al usuario"
+                            }
+
+                        }
+
+                    ) {
                         Text("Registrarme")
                     }
 
