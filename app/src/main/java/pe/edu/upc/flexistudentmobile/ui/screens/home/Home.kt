@@ -6,6 +6,8 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import pe.edu.upc.flexistudentmobile.animations.SplashScreen1
+import pe.edu.upc.flexistudentmobile.animations.SplashScreen2
 import pe.edu.upc.flexistudentmobile.model.data.RequestReservationState
 import pe.edu.upc.flexistudentmobile.model.data.RequestSignUpStudentState
 import pe.edu.upc.flexistudentmobile.model.data.Room
@@ -27,7 +29,24 @@ fun Home(){
         mutableStateOf<Room?>(null)
     }
 
-    NavHost(navController = navController, startDestination=Routes.SignIn.route){
+    NavHost(navController = navController, startDestination=Routes.SplashScreen1.route){
+
+        composable(Routes.SplashScreen1.route){
+            SplashScreen1(
+                load = {
+                    navController.navigate(Routes.SignIn.route)
+                }
+            )
+        }
+
+        composable(Routes.SplashScreen2.route){
+            SplashScreen2(
+                load = {
+                    navController.navigate(Routes.RoomList.route)
+                }
+            )
+        }
+
         composable(Routes.SignUpFirstStep.route){
             SignUpFirstScreen(
                 requestSignUpStudent,
@@ -59,6 +78,9 @@ fun Home(){
                 },
                 signInSuccessful={
                     navController.navigate(Routes.RoomList.route)
+                },
+                splashScreen2 = {
+                    navController.navigate(Routes.SplashScreen2.route)
                 }
             )
         }
@@ -98,4 +120,7 @@ sealed class Routes(val route:String){
     data object RoomList: Routes("RoomList")
     data object RoomReserve: Routes("RoomReserve")
     data object RoomReserveDetails: Routes("RoomReserveDetails")
+
+    data object SplashScreen1: Routes("SplashScreen1")
+    data object SplashScreen2: Routes("SplashScreen2")
 }

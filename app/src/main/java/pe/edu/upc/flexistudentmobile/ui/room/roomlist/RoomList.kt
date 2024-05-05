@@ -40,6 +40,7 @@ import pe.edu.upc.flexistudentmobile.model.data.Room
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RoomList(roomReserve:(Room)->Unit) {
+
     val roomList = remember {
         mutableStateOf<List<Room>>(emptyList())
     }

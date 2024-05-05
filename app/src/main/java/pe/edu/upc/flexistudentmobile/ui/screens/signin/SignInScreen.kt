@@ -44,7 +44,13 @@ import pe.edu.upc.flexistudentmobile.shared.MessageError
 
 
 @Composable
-fun SignInScreen(errorMessageModel: MutableState<String?>, sinUpFirstStep:()->Unit, signInSuccessful:()->Unit) {
+fun SignInScreen(
+    errorMessageModel: MutableState<String?>,
+    sinUpFirstStep:()->Unit,
+    signInSuccessful:()->Unit,
+    splashScreen2: ()-> Unit
+
+) {
 
     val email = remember{
         mutableStateOf("")
@@ -195,7 +201,8 @@ fun SignInScreen(errorMessageModel: MutableState<String?>, sinUpFirstStep:()->Un
                                             studentEntity
                                         )
 
-                                        signInSuccessful()
+                                        //signInSuccessful()
+                                        splashScreen2()
 
                                     }else{
                                         studentRepository.deleteAllStudentDataLocal()
