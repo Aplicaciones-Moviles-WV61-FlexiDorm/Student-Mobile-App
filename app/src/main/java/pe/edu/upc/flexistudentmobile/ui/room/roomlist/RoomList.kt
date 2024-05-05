@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,28 +28,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import pe.edu.upc.flexistudentmobile.factories.room.RoomRepositoryFactory
 import pe.edu.upc.flexistudentmobile.factories.student.repositories.StudentRepositoryFactory
-import pe.edu.upc.flexistudentmobile.model.data.ApiResponseRoomList
 import pe.edu.upc.flexistudentmobile.model.data.Room
-import pe.edu.upc.flexistudentmobile.repositories.RoomRepository
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RoomList() {
+fun RoomList(roomReserve:(Room)->Unit) {
     val roomList = remember {
         mutableStateOf<List<Room>>(emptyList())
     }
@@ -85,14 +73,19 @@ fun RoomList() {
                         .padding(10.dp)
                 )
             } else {
-                RoomListById(roomList)
+                RoomListById(roomList, roomReserve)
             }
         }
     }
 }
 
+
 @Composable
-fun RoomListById(roomListById: MutableState<List<Room>>) {
+fun RoomListById(
+    roomListById: MutableState<List<Room>>,
+    roomReserve:(Room)->Unit
+) {
+
     LazyColumn {
         items(roomListById.value) { room ->
             Card(
@@ -137,7 +130,7 @@ fun RoomListById(roomListById: MutableState<List<Room>>) {
 
                     Button(
                         onClick = {
-
+                            roomReserve(room)
                         },
                         colors = ButtonDefaults.buttonColors(
                             MaterialTheme.colorScheme.secondary
@@ -162,12 +155,7 @@ fun RoomImage(url: String, modifier: Modifier = Modifier){
     GlideImage(
         imageModel={url},
         imageOptions= ImageOptions(contentScale= ContentScale.FillWidth),
-        modifier = modifier.fillMaxWidth(),
-        loading = {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-        }
+        modifier = modifier.fillMaxWidth()
     )
 }
 

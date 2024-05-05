@@ -556,11 +556,11 @@ fun SignUpSecondScreen (
 
                                 studentRepository.signUpStudent(body) { apiResponse, errorCode, errorBody ->
                                     if (apiResponse != null) {
-                                        //dialogTitle.value="En hora buena!"
-                                        //errorMessageModel.value = "Tu registro se completo con exito"
+                                        dialogTitle.value="En hora buena!"
+                                        errorMessageModel.value = "Tu registro se completo con exito"
                                         navigationToSignIn()
                                     } else {
-                                        //dialogTitle.value="Espera!"
+                                        dialogTitle.value="Espera!"
                                         errorMessageModel.value = errorBody
                                     }
                                 }
