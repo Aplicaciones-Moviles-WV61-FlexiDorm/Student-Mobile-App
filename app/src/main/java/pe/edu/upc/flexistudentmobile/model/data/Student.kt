@@ -34,7 +34,7 @@ data class RequestSignUpStudentState(
     var password: MutableState<String> = mutableStateOf(""),
     var address: MutableState<String> = mutableStateOf(""),
     var birthDate: MutableState<String> = mutableStateOf(""),
-    var profilePicture: MutableState<String> = mutableStateOf("https://previews.123rf.com/images/yupiramos/yupiramos1709/yupiramos170930842/87002967-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg"),//aca debo pasarle la iamgen
+    var profilePicture: MutableState<String> = mutableStateOf("https://cdn.dribbble.com/users/5534/screenshots/14230133/profile_4x.jpg"),
     var gender: MutableState<String> = mutableStateOf(""),
     var university: MutableState<String>  = mutableStateOf("")
 )

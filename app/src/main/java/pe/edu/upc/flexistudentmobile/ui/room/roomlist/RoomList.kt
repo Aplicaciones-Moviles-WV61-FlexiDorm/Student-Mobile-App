@@ -1,15 +1,22 @@
 package pe.edu.upc.flexistudentmobile.ui.room.roomlist
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,9 +60,6 @@ fun RoomList() {
         mutableStateOf(true)
     }
 
-
-
-
     Scaffold(
 
     ) {
@@ -64,16 +70,9 @@ fun RoomList() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            /*
-            roomListById.getRoomsById(15) {  apiResponseRoom, errorCode, status ->
-                if (apiResponseRoom != null) {
-                    roomList.value = apiResponseRoom.data
-                } else {
-                    println("error: $status")
-                }
+            LaunchedEffect (Unit){
+                fetchRooms(roomList, isFetchingRooms)
             }
-             */
-            fetchRooms(roomList, isFetchingRooms)
 
             if (roomList.value.isEmpty()) {
                 Text(
@@ -82,7 +81,8 @@ fun RoomList() {
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     ),
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
                 )
             } else {
                 RoomListById(roomList)
@@ -107,18 +107,22 @@ fun RoomListById(roomListById: MutableState<List<Room>>) {
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    roomImage(
-                        url = room.imageUrl,
-                        size = 120.dp
+                    RoomImage(
+                        url = room.imageUrl
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     Text(
                         text = room.title,
-                        style= TextStyle( color = Color.White),
+                        style= TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        ),
                         modifier=Modifier.padding(4.dp)
                     )
 
                     Text(
-                        text = "S/. ${room.price} x hora",
+                        text = "S/. ${room.price} / hora",
                         style= TextStyle( color = Color.White),
                         modifier=Modifier.padding(4.dp)
                     )
@@ -128,6 +132,25 @@ fun RoomListById(roomListById: MutableState<List<Room>>) {
                         style= TextStyle( color = Color.White),
                         modifier=Modifier.padding(4.dp)
                     )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    Button(
+                        onClick = {
+
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            MaterialTheme.colorScheme.secondary
+                        ),
+                        modifier = Modifier.padding(bottom = 20.dp)
+
+                    ) {
+                        Text(
+                            text = "Ver detalle",
+                            style= TextStyle( color = Color.White),
+                            modifier = Modifier.padding(4.dp)
+                        )
+                    }
                 }
             }
         }
@@ -135,16 +158,21 @@ fun RoomListById(roomListById: MutableState<List<Room>>) {
 }
 
 @Composable
-fun roomImage(url: String, size: Dp){
+fun RoomImage(url: String, modifier: Modifier = Modifier){
     GlideImage(
         imageModel={url},
-        imageOptions= ImageOptions(contentScale= ContentScale.Crop),
-        modifier= Modifier.size(size)
+        imageOptions= ImageOptions(contentScale= ContentScale.FillWidth),
+        modifier = modifier.fillMaxWidth(),
+        loading = {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        }
     )
 }
 
 
-fun fetchRooms(roomList: MutableState<List<Room>>, isFetchingRooms: MutableState<Boolean>) {
+suspend fun fetchRooms(roomList: MutableState<List<Room>>, isFetchingRooms: MutableState<Boolean>) {
     isFetchingRooms.value = true
     val maxRoomId = 20L
     val tempList = mutableListOf<Room>()
@@ -155,7 +183,7 @@ fun fetchRooms(roomList: MutableState<List<Room>>, isFetchingRooms: MutableState
 
     var fetchedRoomsCount = 0L
 
-    for (roomId in 1..maxRoomId) {
+    for (roomId in 12L..maxRoomId) {
         roomListById.getRoomsById(roomId) { apiResponseRoom, errorCode, status ->
             if (apiResponseRoom != null) {
                 tempList.addAll(apiResponseRoom.data)
@@ -164,11 +192,10 @@ fun fetchRooms(roomList: MutableState<List<Room>>, isFetchingRooms: MutableState
             }
 
             fetchedRoomsCount++
-            if (fetchedRoomsCount == maxRoomId) {
+            if (fetchedRoomsCount == maxRoomId - 11L) {
                 roomList.value = tempList.toList()
-                isFetchingRooms.value = false
+                isFetchingRooms.value = !isFetchingRooms.value
             }
         }
     }
-
 }

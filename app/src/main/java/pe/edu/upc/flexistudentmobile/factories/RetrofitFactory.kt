@@ -16,7 +16,6 @@ class RetrofitFactory {
                     .addInterceptor(AuthInterceptor(token))
                     .build()
 
-
                 retrofit = Retrofit.Builder()
                     .baseUrl(ApiClient.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
