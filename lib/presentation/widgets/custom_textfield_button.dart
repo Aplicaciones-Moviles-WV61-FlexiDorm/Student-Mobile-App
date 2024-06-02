@@ -6,6 +6,8 @@ class CustomTextfieldButton extends StatelessWidget {
   final double borderRadius;
   final Color borderColor;
   final double padding;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
   
   const CustomTextfieldButton({
     super.key, 
@@ -13,14 +15,15 @@ class CustomTextfieldButton extends StatelessWidget {
     this.labelText, 
     this.borderRadius = 4.0,
     this.borderColor = Colors.purple,
-    this.padding = 4.0
+    this.padding = 4.0, 
+    this.onChanged, 
+    this.controller
   });
 
   static String data = "";
 
   @override
   Widget build(BuildContext context) {
-    final textController = TextEditingController();
     final focusNode = FocusNode();
 
     return Padding(
@@ -33,12 +36,10 @@ class CustomTextfieldButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius)
         ),
         child: TextFormField(
+          onChanged: onChanged,
           onTapOutside: (event) => focusNode.unfocus(),
           focusNode: focusNode,
-          controller: textController,
-          onChanged: (value) {
-            data = value;
-          },
+          controller: controller,
           decoration: InputDecoration(
             prefixIcon: icon,
             labelText: labelText,

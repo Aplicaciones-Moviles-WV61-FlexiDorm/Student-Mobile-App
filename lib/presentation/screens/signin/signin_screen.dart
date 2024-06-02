@@ -1,10 +1,13 @@
+import 'package:flexidorm_student_app/presentation/screens/signup/signup_screen_credentials.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_simple_text.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_titles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SigninScreen extends StatelessWidget {
+  static const String name = "signin_screen";
   const SigninScreen({super.key});
 
   @override
@@ -106,16 +109,17 @@ class _LogInButtons extends StatelessWidget {
 class _NavigationRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CustomSimpleText(
+        const CustomSimpleText(
           text: "¿No tienes una cuenta? ", 
           colorText: Color.fromARGB(255, 117, 52, 246),
         ),
         CustomSimpleText(
+          onTap: () => context.pushNamed(SignupScreenCredentials.name),
           text: "Registrate", 
-          colorText: Color.fromARGB(255, 117, 52, 246),
+          colorText: const Color.fromARGB(255, 117, 52, 246),
           fontWeight: FontWeight.bold,
         ),
       ],

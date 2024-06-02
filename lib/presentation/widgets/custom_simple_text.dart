@@ -6,12 +6,14 @@ class CustomSimpleText extends StatelessWidget {
   final String text;
   final Color colorText;
   final FontWeight? fontWeight;
+  final VoidCallback? onTap;
 
   const CustomSimpleText({
     super.key, 
     required this.text, 
     required this.colorText, 
-    this.fontWeight
+    this.fontWeight,
+    this.onTap
   });
 
   @override
@@ -25,9 +27,7 @@ class CustomSimpleText extends StatelessWidget {
               color: colorText,
               fontWeight: fontWeight
             ),
-            recognizer: TapGestureRecognizer()..onTap = () {
-              
-            },
+            recognizer: TapGestureRecognizer()..onTap = onTap
           ),
         ],
       ),
