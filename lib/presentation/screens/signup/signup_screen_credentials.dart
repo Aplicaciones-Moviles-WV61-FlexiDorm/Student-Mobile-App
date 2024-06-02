@@ -63,19 +63,19 @@ class _WelcomeUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-      Text(
-        "¡Empecemos Estudiante!",
-        style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
+        Text(
+          "¡Empecemos Estudiante!",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
-      Text(
-        "Crea una cuenta en Flexidorm y obtén todas las funcionalidades",
-        style: TextStyle(
-          fontSize: 12,
+        Text(
+          "Crea una cuenta en Flexidorm y obtén todas las funcionalidades",
+          style: TextStyle(
+            fontSize: 12,
+          ),
         ),
-      ),
       ],
     );
   }

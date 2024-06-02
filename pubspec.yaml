@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   animate_do: ^3.3.4
+  carousel_slider: ^4.2.1
   flutter:
     sdk: flutter
   go_router: ^14.1.4

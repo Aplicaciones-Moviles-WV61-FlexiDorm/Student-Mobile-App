@@ -1,3 +1,4 @@
+import 'package:flexidorm_student_app/presentation/screens/home/home.dart';
 import 'package:flexidorm_student_app/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,7 +8,8 @@ final appRouter = GoRouter(
     GoRoute(
       path: "/",
       name: SigninScreen.name,
-      builder: (context, state) => const SigninScreen(),
+      //builder: (context, state) => const SigninScreen(),
+      builder: (context, state) => const Home(),
     ),
     GoRoute(
       path: "/register-credentials",
