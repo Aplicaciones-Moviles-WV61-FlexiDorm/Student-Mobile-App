@@ -1,5 +1,5 @@
 import 'package:flexidorm_student_app/config/theme/app_theme.dart';
-import 'package:flexidorm_student_app/presentation/screens/signin/signin_screen.dart';
+import 'package:flexidorm_student_app/presentation/screens/signup/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme(selectedColor: 0).getTheme(),
-      home: const SigninScreen(),
+      home: const SignupScreenPersonalInformation(),
     );
   }
 }

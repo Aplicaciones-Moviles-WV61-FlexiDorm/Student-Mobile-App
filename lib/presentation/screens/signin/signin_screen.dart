@@ -110,7 +110,7 @@ class _NavigationRegisterScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomSimpleText(
-          text: "¿No tienes cuenta? ", 
+          text: "¿No tienes una cuenta? ", 
           colorText: Color.fromARGB(255, 117, 52, 246),
         ),
         CustomSimpleText(
