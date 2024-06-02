@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
@@ -93,7 +92,7 @@ class _SignupScreenPersonalInformationState extends State<SignupScreenPersonalIn
                 CustomElevatedButton(
                   text: "REGISTRARME", 
                   backgroundColor: const Color.fromARGB(255, 117, 52, 246),
-                  onPressed: _register,
+                  onPressed: _register
                 ),
               ],
             ),
@@ -138,14 +137,16 @@ class _SignupScreenPersonalInformationState extends State<SignupScreenPersonalIn
       final studentService = StudentService();
       final response = await studentService.registerStudent(student);
 
-      if (response.status == "SUCCESS") {
+      if (response.status == "success") {
+        print('Redirigiendo a la pantalla de inicio de sesión');
+        //context.pushNamed(SigninScreen.name);
+        context.go("/");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registro exitoso: ${response.message}')),
         );
-        context.go("/");
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: ${response.message}")),
+          SnackBar(content: Text(response.message)),
         );
       }
     } catch (e) {
