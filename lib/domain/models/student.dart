@@ -34,17 +34,17 @@ class Student{
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
     //studentId: json["userId"],
-    firstName: json["firstname"],
-    lastName: json["lastname"],
-    userName: json["username"],
-    phoneNumber: json["phoneNumber"],
-    email: json["email"],
-    password: json["password"],
-    address: json["address"],
-    birthDate: DateTime.parse(json["birthDate"]),
+    firstName: json["firstname"] ?? "",
+    lastName: json["lastname"] ?? "",
+    userName: json["username"] ?? "",
+    phoneNumber: json["phoneNumber"] ?? "",
+    email: json["email"] ?? "",
+    password: json["password"] ?? "",
+    address: json["address"] ?? "",
+    birthDate: DateTime.parse(json["birthDate"] ?? "1999-01-01"),
     profilePicture: json["profilePicture"],
     gender: json["gender"],
-    university: json["university"],
+    university: json["university"] ?? "",
     //token: json["token"],
     //verified: json["verified"],
   );
@@ -58,7 +58,8 @@ class Student{
     "email": email,
     "password": password,
     "address": address,
-    "birthDate": "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
+    //"birthDate": "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
+    "birthDate": birthDate.toIso8601String(),
     "profilePicture": profilePicture,
     "gender": gender,
     "university": university,
@@ -67,29 +68,3 @@ class Student{
   };
 
 }
-
-
-/* 
-Respuesta de la API al registrarse:
-  {
-    "message": "OK",
-    "status": "SUCCESS",
-    "data": {
-      "userId": 11,
-      "username": "mica",
-      "firstname": "Micaela",
-      "lastname": "Nara",
-      "phoneNumber": "647923355",
-      "email": "micaela@upc.edu.pe",
-      "address": "Av. La Mar",
-      "birthDate": "2003-04-03",
-      "profilePicture": "https://cdn.dribbble.com/users/5534/screenshots/14230133/profile_4x.jpg",
-      "gender": "FEMALE",
-      "university": "UPC",
-      "dtype": "Student",
-      "token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtaWNhZWxhQHVwYy5lZHUucGUiLCJpYXQiOjE3MTcyOTc4NzYsImV4cCI6MTcxOTg4OTg3Niwicm9sZXMiOlsiUk9MRV9VU0VSIl19._UbYiSsFgM89lOuSuEqA5n2qp40g0MDXDUzsRgEWpHUPRQ6OJRFHjkSdqwAm_BJs",
-      "enabled": true,
-      "verified": false
-    }
-  }
-*/

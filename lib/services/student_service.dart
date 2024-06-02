@@ -26,19 +26,19 @@ class StudentService{
 class ApiResponse {
   final String message;
   final String status;
-  final Student data;
+  final Student? data;
 
   ApiResponse({
     required this.message, 
     required this.status, 
-    required this.data
+    this.data
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
     return ApiResponse(
       message: json['message'],
       status: json['status'],
-      data: Student.fromJson(json['data']),
+      data: json['data'] != null ? Student.fromJson(json['data']) : null,
     );
   }
 }
