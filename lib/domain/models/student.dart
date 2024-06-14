@@ -11,8 +11,6 @@ class Student{
   DateTime birthDate;
   String profilePicture;
   String university;
-  //bool verified;
-  //String token;
 
   Student({
     //required this.studentId,
@@ -27,8 +25,6 @@ class Student{
     required this.birthDate, 
     this.profilePicture = "https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Free-Download.png", 
     required this.university, 
-    //required this.verified, 
-    //required this.token
   });
 
 
@@ -45,8 +41,6 @@ class Student{
     profilePicture: json["profilePicture"],
     gender: json["gender"],
     university: json["university"] ?? "",
-    //token: json["token"],
-    //verified: json["verified"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -63,8 +57,6 @@ class Student{
     "profilePicture": profilePicture,
     "gender": gender,
     "university": university,
-    //"token": token,
-    //"verified": verified,
   };
 
 }

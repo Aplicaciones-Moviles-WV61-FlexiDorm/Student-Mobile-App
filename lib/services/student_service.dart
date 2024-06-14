@@ -33,9 +33,14 @@ class StudentService{
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
       final token = jsonData["data"]["token"];
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("jwt_token", token);
+      final student = Student.fromJson(jsonData["data"]);
+
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.setString("jwt_token", token);
+      await preferences.setString("student", jsonEncode(student.toJson()));
+
       return jsonData;
+      
     } else {
       print("Error: ${response.statusCode} - ${response.body}");
       return null;

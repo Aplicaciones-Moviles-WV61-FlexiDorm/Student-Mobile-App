@@ -6,7 +6,6 @@ import 'package:flexidorm_student_app/services/student_service.dart';
 import 'package:flutter/material.dart';
 
 
-
 class RoomsScreen extends StatefulWidget {
   const RoomsScreen({super.key});
 
