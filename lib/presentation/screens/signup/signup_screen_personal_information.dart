@@ -119,6 +119,7 @@ class _SignupScreenPersonalInformationState extends State<SignupScreenPersonalIn
     }
 
     final student = Student(
+
       firstName: firstName,
       lastName: lastName,
       userName: userName,
@@ -158,6 +159,7 @@ class _SignupScreenPersonalInformationState extends State<SignupScreenPersonalIn
       );
     }
   }
+  
 }
 
 

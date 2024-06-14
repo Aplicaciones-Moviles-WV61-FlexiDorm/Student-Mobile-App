@@ -1,6 +1,4 @@
-import 'package:flexidorm_student_app/presentation/screens/profile/student_profile.dart';
-import 'package:flexidorm_student_app/presentation/screens/rooms/favorite_rooms.dart';
-import 'package:flexidorm_student_app/presentation/screens/rooms/rooms_screen.dart';
+import 'package:flexidorm_student_app/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -14,6 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   int _currentIndex = 0;
+
   final List<Widget> _tabs = [
     const RoomsScreen(),
     const FavoriteRooms(),
@@ -21,7 +20,7 @@ class _HomeState extends State<Home> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     return Scaffold(
       body: _tabs[_currentIndex],
       bottomNavigationBar:  BottomNavigationBar(
@@ -48,4 +47,5 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 }

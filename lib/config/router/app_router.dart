@@ -1,4 +1,4 @@
-import 'package:flexidorm_student_app/presentation/screens/home/home.dart';
+import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:flexidorm_student_app/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,7 +9,6 @@ final appRouter = GoRouter(
       path: "/",
       name: SigninScreen.name,
       builder: (context, state) => const SigninScreen(),
-      //builder: (context, state) => const Home(),
     ),
     GoRoute(
       path: "/register-credentials",
@@ -31,6 +30,27 @@ final appRouter = GoRouter(
       path: "/home",
       name: Home.name,
       builder: (context, state) => const Home(),
+      routes: [
+        GoRoute(
+          path: "profile",
+          name: StudentProfile.name,
+          builder: (context, state) => const StudentProfile(),
+        ),
+      ]
     ),
+    GoRoute(
+      path: "/profile-edit",
+      name: StudentProfileEdit.name,
+      builder: (context, state) {
+        final student = state.extra as Student;
+        return StudentProfileEdit(student: student);
+      },
+    ),
+    GoRoute(
+      path: "/favorites",
+      name: FavoriteRooms.name,
+      builder: (context, state) => const FavoriteRooms(),
+    ),
+
   ]
 );

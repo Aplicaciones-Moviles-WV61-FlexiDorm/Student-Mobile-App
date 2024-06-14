@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FavoriteRooms extends StatelessWidget {
+  static const String name = "favorite_rooms";
   const FavoriteRooms({super.key});
 
   @override

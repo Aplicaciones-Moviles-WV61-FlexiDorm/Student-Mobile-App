@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentProfile extends StatelessWidget {
+  static const String name = "student_profile";
   const StudentProfile({super.key});
 
   Future<Student?> getStudent() async {
@@ -23,6 +24,8 @@ class StudentProfile extends StatelessWidget {
     await preferences.remove("student");
     context.go("/");
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +79,20 @@ class StudentProfile extends StatelessWidget {
                   _infoStudent(Icons.cake, "Nacimiento", "${student.birthDate.toLocal()}".split(' ')[0]),
                   _infoStudent(Icons.school, "Universidad", student.university),
                   const Spacer(),
-
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 50.0),
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: CustomElevatedButton(
+                      text: "Editar Perfil",
+                      backgroundColor: const Color.fromARGB(255, 138, 93, 229),
+                      onPressed: () => context.go("/profile-edit", extra: student),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30.0),
                     child: CustomElevatedButton(
                       text: "Cerrar Sesión",
-                      backgroundColor: const Color.fromARGB(255, 117, 52, 246),
+                      backgroundColor: const Color.fromARGB(255, 83, 32, 185),
                       onPressed: () => logout(context),
                     ),
                   )

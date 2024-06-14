@@ -49,6 +49,7 @@ class StudentService{
 
   Future<List<Room>> getRooms() async {
     List<Room> rooms = [];
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("jwt_token");
 
@@ -90,6 +91,32 @@ class StudentService{
     return rooms;
   }
 
+  Future<bool> updateStudentProfile(Student student) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final token = preferences.getString("jwt_token");
+
+    if (student.studentId == null) {
+      throw Exception("El ID del estudiante no puede ser nulo");
+    }
+
+    final url = "${baseUrl}auth/student/${student.studentId}";
+    final headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+    final body = jsonEncode(student.toJson());
+
+    final response = await http.put(Uri.parse(url), headers: headers, body: body);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      await preferences.setString("student", jsonEncode(student.toJson()));
+      return true;
+    } else {
+      print("Error: ${response.statusCode} - ${response.body}");
+      return false;
+    }
+  }
+  
 }
 
 class ApiResponse {
