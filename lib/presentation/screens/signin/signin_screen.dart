@@ -75,8 +75,6 @@ class _WelcomeUser extends StatelessWidget {
   }
 }
 
-
-
 class _LogInButtons extends StatefulWidget {
   @override
   State<_LogInButtons> createState() => _LogInButtonsState();
@@ -91,16 +89,13 @@ class _LogInButtonsState extends State<_LogInButtons> {
   void _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
-
     final response = await _studentService.login(email, password);
 
     if (!mounted) {return;}
-
     if (response != null && response['status'] == 'SUCCESS') {
       //final token = response['data']['token'];
       context.go("/home");
     } else {
-      // Manejar el error de autenticación
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error de autenticación')),
       );
