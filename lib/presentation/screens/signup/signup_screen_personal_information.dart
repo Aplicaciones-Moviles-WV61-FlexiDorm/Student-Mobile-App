@@ -132,18 +132,21 @@ class _SignupScreenPersonalInformationState extends State<SignupScreenPersonalIn
 
     print('Student JSON: ${jsonEncode(student.toJson())}');
 
-
     try {
       final studentService = StudentService();
       final response = await studentService.registerStudent(student);
 
-      if (response.status == "success") {
-        print('Redirigiendo a la pantalla de inicio de sesión');
-        //context.pushNamed(SigninScreen.name);
-        context.go("/");
+      if (!mounted) {return;}
+
+      if (response.status.toLowerCase() == "success") {
+        print('Registro exitoso: ${response.message}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registro exitoso: ${response.message}')),
         );
+        print('Redirigiendo a la pantalla de inicio de sesión');
+
+        context.go("/");
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.message)),

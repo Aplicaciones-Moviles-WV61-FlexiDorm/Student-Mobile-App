@@ -8,8 +8,8 @@ final appRouter = GoRouter(
     GoRoute(
       path: "/",
       name: SigninScreen.name,
-      //builder: (context, state) => const SigninScreen(),
-      builder: (context, state) => const Home(),
+      builder: (context, state) => const SigninScreen(),
+      //builder: (context, state) => const Home(),
     ),
     GoRoute(
       path: "/register-credentials",
@@ -26,6 +26,11 @@ final appRouter = GoRouter(
           password: extra['password'],
         );
       }
+    ),
+    GoRoute(
+      path: "/home",
+      name: Home.name,
+      builder: (context, state) => const Home(),
     ),
   ]
 );

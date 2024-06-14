@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 
 
 class RoomsScreen extends StatelessWidget {
