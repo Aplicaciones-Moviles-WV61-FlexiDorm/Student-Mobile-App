@@ -1,3 +1,4 @@
+import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -40,6 +41,49 @@ class StudentService{
       print('Error: ${response.statusCode} - ${response.body}');
       return null;
     }
+  }
+
+  Future<List<Room>> getRooms() async {
+    List<Room> rooms = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('jwt_token');
+
+    int roomId = 12; // debe emepzar desde el ID 12
+    bool fetchMore = true;
+
+    while (fetchMore) {
+      final url = "${baseUrl}room/getRoomsByRoomId/$roomId";
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = jsonDecode(response.body);
+        final roomData = jsonData['data'] as List<dynamic>;
+
+        if (roomData.isEmpty) {
+          fetchMore = false;
+        } else {
+          for (var data in roomData) {
+            final roomImageUrl = data['imageUrl'];
+            final imageUrlResponse = await http.head(Uri.parse(roomImageUrl));
+            if (imageUrlResponse.statusCode == 200) {
+              rooms.add(Room.fromJson(data));
+            } else {
+              print('Error loading image: $roomImageUrl');
+            }
+          }
+          roomId++;
+        }
+      } else {
+        fetchMore = false;
+      }
+    }
+
+    return rooms;
   }
 
 }
