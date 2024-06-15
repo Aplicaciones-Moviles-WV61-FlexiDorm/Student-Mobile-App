@@ -47,8 +47,8 @@ class _StudentProfileEditState extends State<StudentProfileEdit> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            GoRouter.of(context).go("/home/profile");
-          }  
+            context.go("/home");
+          }
         ),
         title: const Text("Editar Perfil"),
       ),
@@ -153,7 +153,7 @@ class _StudentProfileEditState extends State<StudentProfileEdit> {
       final success = await _studentService.updateStudentProfile(updatedStudent);
 
       if (success) {
-        GoRouter.of(context).go("/home/profile");
+        GoRouter.of(context).go("/home");
 
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

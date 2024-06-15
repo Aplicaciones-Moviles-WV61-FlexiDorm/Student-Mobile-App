@@ -1,6 +1,8 @@
 import 'package:flexidorm_student_app/config/router/app_router.dart';
 import 'package:flexidorm_student_app/config/theme/app_theme.dart';
+import 'package:flexidorm_student_app/presentation/providers/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,11 +13,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router( 
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+      ],
+      child: MaterialApp.router( 
       routerConfig: appRouter,
       title: "Flexidorm Student App",
       debugShowCheckedModeBanner: false,
       theme: AppTheme(selectedColor: 0).getTheme(),
+      )
     );
   }
 }

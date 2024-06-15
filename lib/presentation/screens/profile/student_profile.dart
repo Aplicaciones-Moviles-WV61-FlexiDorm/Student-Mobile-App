@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flexidorm_student_app/domain/models/student.dart';
+import 'package:flexidorm_student_app/presentation/providers/home_provider.dart';
+import 'package:flexidorm_student_app/presentation/screens/home/home.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentProfile extends StatelessWidget {
@@ -22,10 +25,12 @@ class StudentProfile extends StatelessWidget {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove("jwt_token");
     await preferences.remove("student");
+    await preferences.remove("lastIndex");
+    await preferences.setInt("lastIndex", 0);
+    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    homeProvider.updateIndex(0);
     context.go("/");
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

@@ -30,13 +30,12 @@ final appRouter = GoRouter(
       path: "/home",
       name: Home.name,
       builder: (context, state) => const Home(),
-      routes: [
-        GoRoute(
-          path: "profile",
-          name: StudentProfile.name,
-          builder: (context, state) => const StudentProfile(),
-        ),
-      ]
+    ),
+
+    GoRoute(
+      path: "/profile",
+      name: StudentProfile.name,
+      builder: (context, state) => const StudentProfile(),
     ),
     GoRoute(
       path: "/profile-edit",
