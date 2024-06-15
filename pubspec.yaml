@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^14.1.4
+  google_fonts: ^6.2.1
   http: ^1.2.1
   path: ^1.9.0
   provider: ^6.1.2

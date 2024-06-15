@@ -53,7 +53,7 @@ class StudentService{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("jwt_token");
 
-    int roomId = 12; // debe empezar desde el ID 12
+    int roomId = 32; // debe empezar desde el ID 12
     bool fetchMore = true;
 
     while (fetchMore) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 List<Color> colorList = <Color>[
   const Color.fromARGB(255, 160, 95, 239),
@@ -30,7 +31,8 @@ class AppTheme{
     colorSchemeSeed: colorList[selectedColor],
     appBarTheme: const AppBarTheme(
       centerTitle: true
-    )
+    ),
+    textTheme: GoogleFonts.ptSansTextTheme(),
   );
 
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:flexidorm_student_app/presentation/providers/home_provider.dart';
-import 'package:flexidorm_student_app/presentation/screens/home/home.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
