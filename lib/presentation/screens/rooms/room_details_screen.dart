@@ -83,71 +83,82 @@ class RoomDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            // Card de detalles
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    room.title,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      const Icon(Icons.money_outlined, color: Colors.black),
-                      const SizedBox(width: 20),
-                      Text(
-                        "S/.${room.price.toStringAsFixed(2)} por hora",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 174, 85, 238),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    room.description,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    room.address,
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    room.nearUniversities,
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  // Botón de reserva
-                  const SizedBox(height: 25),
-                  Center(
-                    child:  CustomElevatedButton(
-                      text: "RESERVAR", 
-                      backgroundColor: const Color.fromARGB(255, 135, 84, 235),
-                      widthButton: 350,
-                      onPressed: () { },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _RoomInformation(room: room),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _RoomInformation extends StatelessWidget {
+  const _RoomInformation({
+    required this.room,
+  });
+
+  final Room room;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            room.title,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              const Icon(Icons.money_outlined, color: Colors.black),
+              const SizedBox(width: 20),
+              Text(
+                "S/.${room.price.toStringAsFixed(2)} por hora",
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 174, 85, 238),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            room.description,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            room.address,
+            style: const TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            room.nearUniversities,
+            style: const TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 25),
+          Center(
+            child:  CustomElevatedButton(
+              text: "RESERVAR", 
+              backgroundColor: const Color.fromARGB(255, 135, 84, 235),
+              widthButton: 350,
+              onPressed: () { },
+            ),
+          ),
+        ],
       ),
     );
   }
