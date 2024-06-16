@@ -1,6 +1,7 @@
 import 'package:flexidorm_student_app/config/router/app_router.dart';
 import 'package:flexidorm_student_app/config/theme/app_theme.dart';
 import 'package:flexidorm_student_app/presentation/providers/home_provider.dart';
+import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => StudentProvider()),
       ],
       child: MaterialApp.router( 
       routerConfig: appRouter,

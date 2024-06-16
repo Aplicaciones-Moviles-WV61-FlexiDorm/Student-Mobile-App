@@ -1,11 +1,14 @@
 import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/domain/models/student.dart';
+import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentService{
-  final String baseUrl = "https://flexidormsapi-wfjf.onrender.com/api/v1/";
+  final String baseUrl = "https://flexidorms-api-mov-8stmr.ondigitalocean.app/api/v1/";
 
   Future<ApiResponse> registerStudent(Student student) async {
     final url = "${baseUrl}auth/signUp/student";
@@ -23,7 +26,7 @@ class StudentService{
     }
   }
 
-  Future<Map<String, dynamic>?> login(String email, String password) async {
+  Future<Map<String, dynamic>?> login(String email, String password, BuildContext context) async {
     final url = "${baseUrl}auth/signIn";
     final headers = {"Content-Type": "application/json"};
     final body = jsonEncode({"email": email, "password": password});
@@ -37,7 +40,9 @@ class StudentService{
 
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.setString("jwt_token", token);
-      await preferences.setString("student", jsonEncode(student.toJson()));
+      //await preferences.setString("student", jsonEncode(student.toJson()));
+      final studentProvider = Provider.of<StudentProvider>(context, listen: false);
+      await studentProvider.saveStudent(student);
 
       return jsonData;
       
@@ -117,6 +122,30 @@ class StudentService{
     }
   }
   
+  Future<ApiResponse> registerReservation(Map<String, dynamic> rental) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final token = preferences.getString("jwt_token");
+    
+    final url = "${baseUrl}rental/registerRental";
+    final headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+
+    final body = jsonEncode(rental);
+    print("Sending JSON: $body\n\n");
+    final response = await http.post(Uri.parse(url), headers: headers, body: body);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonData = jsonDecode(response.body);
+      return ApiResponse.fromJson(jsonData);
+      
+    } else {
+      print("Error: ${response.statusCode} - ${response.body}");
+      throw Exception("Error al registrar la reserva");
+    }
+  }
+
 }
 
 class ApiResponse {

@@ -138,27 +138,27 @@ class _CarouselRooms extends StatelessWidget {
 
     List<Room> rooms = [
       Room.carrousel(
-        imageUrl: "https://th.bing.com/th/id/R.6863d111be607a0a704abb81bdbfbaa2?rik=D%2fIYj42uLnQfaA&pid=ImgRaw&r=0",
+        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
         title: 'Habitación acogedora',
         address: "Lima, Peru",
       ),
       Room.carrousel(
-        imageUrl: "https://th.bing.com/th/id/R.38656fd1b5b45c8ed96aae90747d331c?rik=1nNWXYH0%2fE3F8w&pid=ImgRaw&r=0",
+        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
         title: 'Suite de lujo',
         address: "Lima, Peru",
       ),
       Room.carrousel(
-        imageUrl: "https://th.bing.com/th/id/R.38656fd1b5b45c8ed96aae90747d331c?rik=1nNWXYH0%2fE3F8w&pid=ImgRaw&r=0",
+        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
         title: 'Suite de lujo',
         address: "Lima, Peru",
       ),
       Room.carrousel(
-        imageUrl: "https://th.bing.com/th/id/R.38656fd1b5b45c8ed96aae90747d331c?rik=1nNWXYH0%2fE3F8w&pid=ImgRaw&r=0",
+        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
         title: 'Habitacion en San Isidro',
         address: "Lima, Peru",
       ),
       Room.carrousel(
-        imageUrl: "https://th.bing.com/th/id/R.38656fd1b5b45c8ed96aae90747d331c?rik=1nNWXYH0%2fE3F8w&pid=ImgRaw&r=0",
+        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
         title: 'Suite de lujo',
         address: "Lima, Peru",
       ),

@@ -12,6 +12,7 @@ class RoomDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -155,9 +156,12 @@ class _RoomInformation extends StatelessWidget {
               text: "RESERVAR", 
               backgroundColor: const Color.fromARGB(255, 135, 84, 235),
               widthButton: 350,
-              onPressed: () { },
+              onPressed: () {
+                context.go("/reserve-rooms", extra: room);
+              },
             ),
           ),
+
         ],
       ),
     );
