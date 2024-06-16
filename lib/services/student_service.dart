@@ -21,7 +21,6 @@ class StudentService{
       final jsonData = jsonDecode(response.body);
       return ApiResponse.fromJson(jsonData);
     } else {
-      print("Error: ${response.statusCode} - ${response.body}");
       throw Exception("Error al registrar estudiante");
     }
   }
@@ -122,7 +121,7 @@ class StudentService{
     }
   }
   
-  Future<ApiResponse> registerReservation(Map<String, dynamic> rental) async {
+  Future<bool> registerReservation(Map<String, dynamic> rental) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final token = preferences.getString("jwt_token");
     
@@ -133,16 +132,13 @@ class StudentService{
     };
 
     final body = jsonEncode(rental);
-    print("Sending JSON: $body\n\n");
     final response = await http.post(Uri.parse(url), headers: headers, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      final jsonData = jsonDecode(response.body);
-      return ApiResponse.fromJson(jsonData);
+      return true;
       
     } else {
-      print("Error: ${response.statusCode} - ${response.body}");
-      throw Exception("Error al registrar la reserva");
+      return false;
     }
   }
 

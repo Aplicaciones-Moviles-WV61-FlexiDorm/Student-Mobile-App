@@ -120,7 +120,7 @@ class ReserveRooms extends StatelessWidget {
   ) async {
 
     if (student == null) {
-      print("EROOR: El Student es nulo");
+      print("ERROR: El Student es nulo");
       return;
     }
 
@@ -140,27 +140,26 @@ class ReserveRooms extends StatelessWidget {
       movement: "new"
     );
 
-    try {
-      final response = await StudentService().registerReservation(reservation.toJson());
+    final success = await StudentService().registerReservation(reservation.toJson());
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Reserva registrada correctamente"),
-          backgroundColor: const Color.fromARGB(255, 162, 85, 238), 
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        )
-      );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: success ? const Text("Reserva registrada correctamente") : const Text("Error al registrar reserva"),
+        backgroundColor: const Color.fromARGB(255, 162, 85, 238), 
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      )
+    );
 
+    if (success) {
       context.go("/home");
+    }
 
-    } catch (e) {
-      print("Error al registrar la reserva: $e");
-      
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Error al registrar reserva"),
+          content: const Text("Error al registrar reserva"),
           backgroundColor: const Color.fromARGB(255, 238, 96, 86), 
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.all(10),
