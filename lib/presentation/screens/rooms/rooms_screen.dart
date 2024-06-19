@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
+import 'package:flexidorm_student_app/domain/models/student.dart';
+import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
 import 'package:flexidorm_student_app/services/student_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 
 class RoomsScreen extends StatefulWidget {
@@ -17,6 +20,7 @@ class RoomsScreen extends StatefulWidget {
 class _RoomsScreenState extends State<RoomsScreen> {
   late Future<List<Room>> _roomsFuture;
 
+
   @override
   void initState() {
     super.initState();
@@ -25,12 +29,15 @@ class _RoomsScreenState extends State<RoomsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final studentProvider = Provider.of<StudentProvider>(context);
+    final student = studentProvider.student;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: _ProfileImage(),
+            child: _ProfileImage(urlImage: student!.profilePicture),
           )
         ],
       ),
@@ -78,13 +85,25 @@ class _RoomsScreenState extends State<RoomsScreen> {
   }
 }
 
-class _ProfileImage extends StatelessWidget {
+class _ProfileImage extends StatefulWidget {
+  String urlImage;
+
+  _ProfileImage({
+    required this.urlImage
+  });
 
   @override
+  State<_ProfileImage> createState() => _ProfileImageState();
+}
+
+class _ProfileImageState extends State<_ProfileImage> {
+  @override
   Widget build(BuildContext context) {
-    return const CircleAvatar(
+    return CircleAvatar(
       backgroundImage: NetworkImage(
-        "https://th.bing.com/th/id/OIP.cf140NJe-x3ltcL-d1Nf9gAAAA?rs=1&pid=ImgDetMain"
+        widget.urlImage
+        //"https://th.bing.com/th/id/OIP.cf140NJe-x3ltcL-d1Nf9gAAAA?rs=1&pid=ImgDetMain"
+        
       ),
     );
   }
