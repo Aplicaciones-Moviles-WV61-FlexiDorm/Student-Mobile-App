@@ -89,7 +89,7 @@ Si deseas contribuir a FLEXIDORM, por favor sigue estos pasos:
 
 Para cualquier consulta, puedes visitar nuestra Landing Page:
 
-- Landing Page: [www.flexidorm.upc.edu.pe](https://aplicaciones-moviles-wv61-flexidorm.github.io/FlexDormLandingPage/)
+- Landing Page: <a href="https://aplicaciones-moviles-wv61-flexidorm.github.io/FlexDormLandingPage/" target="_blank">www.flexidorm.upc.edu.pe</a>
 
 ---
 ¡Gracias por usar FLEXIDORM! Tu seguridad y comodidad son nuestra prioridad.
