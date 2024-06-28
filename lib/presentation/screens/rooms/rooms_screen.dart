@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
+import 'package:flexidorm_student_app/presentation/providers/room_provider.dart';
 import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
-import 'package:flexidorm_student_app/services/student_service.dart';
+//import 'package:flexidorm_student_app/services/student_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +18,14 @@ class RoomsScreen extends StatefulWidget {
 }
 
 class _RoomsScreenState extends State<RoomsScreen> {
-  late Future<List<Room>> _roomsFuture;
-
+  //late Future<List<Room>> roomsFuture;
 
   @override
   void initState() {
     super.initState();
-    _roomsFuture = StudentService().getRooms();
+    //_roomsFuture = StudentService().getRooms();
+    final roomProvider = Provider.of<RoomProvider>(context, listen: false);
+    roomProvider.fetchRooms();
   }
 
   @override
@@ -54,26 +56,20 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   _CarouselRooms(),
                   const SizedBox(height: 20),
 
-                  FutureBuilder<List<Room>>(
-                    future: _roomsFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Text('No se encontraron habitaciones');
-
+                  //FutureBuilder<List<Room>>
+                  Consumer<RoomProvider>(
+                    builder: (context, roomProvider, child) {
+                      if (roomProvider.rooms.isEmpty) {
+                        return const Center(child: CircularProgressIndicator());
                       } else {
                         return Column(
-                          children: snapshot.data!.map((room) => RoomCard(room: room)).toList(),
+                          children: roomProvider.rooms
+                              .map((room) => RoomCard( room: room))
+                              .toList(),
                         );
                       }
                     },
-                  ),
-
+                  )
                 ],
               ),
             ),

@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flexidorm_student_app/dao/room_dao.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
+import 'package:flexidorm_student_app/presentation/screens/maps/animated_markers_map.dart';
+import 'package:flexidorm_student_app/presentation/providers/room_provider.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class RoomDetailsScreen extends StatefulWidget {
   final Room room;
@@ -33,6 +36,7 @@ class _RoomDetailsScreenState extends State<RoomDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     checkFavorite();
+    final roomProvider = Provider.of<RoomProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +57,9 @@ class _RoomDetailsScreenState extends State<RoomDetailsScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(widget.room.imageUrl),
+                      image: CachedNetworkImageProvider(
+                        widget.room.imageUrl,
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -66,7 +72,6 @@ class _RoomDetailsScreenState extends State<RoomDetailsScreen> {
                       setState(() {
                         _isFavorite = !_isFavorite;
                       });
-
                       _isFavorite 
                         ? _roomDao.insert(widget.room) 
                         : _roomDao.delete(widget.room);
@@ -95,7 +100,15 @@ class _RoomDetailsScreenState extends State<RoomDetailsScreen> {
                   right: 10,
                   child: GestureDetector(
                     onTap: () {
-                      
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => AnimatedMarkersMap(
+                            selectedRoom: widget.room, 
+                            rooms: roomProvider.rooms,
+                          )
+                        )
+                      );
                     },
                     child: Container(
                       width: 50,
