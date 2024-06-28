@@ -1,17 +1,38 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flexidorm_student_app/dao/room_dao.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class RoomDetailsScreen extends StatelessWidget {
-  static const String name = "room_detail_screen";
+class RoomDetailsScreen extends StatefulWidget {
   final Room room;
-
+  static const String name = "room_detail_screen";
   const RoomDetailsScreen({super.key, required this.room});
 
   @override
+  State<RoomDetailsScreen> createState() => _RoomDetailsScreenState();
+}
+
+class _RoomDetailsScreenState extends State<RoomDetailsScreen> {
+  bool _isFavorite = false;
+  final RoomDao _roomDao = RoomDao();
+
+  checkFavorite(){
+    _roomDao.isFavorite(widget.room).then(
+      (value) {
+        if(mounted) {
+          setState(() {
+            _isFavorite = value;
+          });
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    checkFavorite();
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +53,7 @@ class RoomDetailsScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(room.imageUrl),
+                      image: CachedNetworkImageProvider(widget.room.imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -42,19 +63,29 @@ class RoomDetailsScreen extends StatelessWidget {
                   right: 10,
                   child: GestureDetector(
                     onTap: () {
-                      
+                      setState(() {
+                        _isFavorite = !_isFavorite;
+                      });
+
+                      _isFavorite 
+                        ? _roomDao.insert(widget.room) 
+                        : _roomDao.delete(widget.room);
                     },
                     child: Container(
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.black.withOpacity(0.5),
+                        color: _isFavorite 
+                          ? const Color.fromARGB(255, 245, 167, 161)
+                          : Colors.black.withOpacity(0.5),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.favorite_sharp,
                         size: 20,
-                        color: Colors.white
+                        color: _isFavorite 
+                          ? const Color.fromARGB(255, 229, 37, 24)
+                          : Colors.white,
                       ),
                     ),
                   ),
@@ -84,7 +115,7 @@ class RoomDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            _RoomInformation(room: room),
+            _RoomInformation(room: widget.room),
           ],
         ),
       ),

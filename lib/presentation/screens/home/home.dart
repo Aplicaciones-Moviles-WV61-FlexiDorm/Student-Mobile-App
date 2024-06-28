@@ -27,17 +27,27 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: _tabs[homeProvider.currentIndex],
       bottomNavigationBar:  BottomNavigationBar(
+        selectedItemColor: const Color.fromARGB(255, 117, 52, 246),
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+
+            ),
             label: "Home"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(
+              Icons.favorite,
+
+            ),
             label: "Favorites"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+
+            ),
             label: "Profile"
           ),
         ],

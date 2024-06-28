@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
-import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
 import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
 import 'package:flexidorm_student_app/services/student_service.dart';
@@ -48,7 +47,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
             child: Center(
               child: Column(
                 children: [
-                  _Welcome(),
+                  _Welcome(studentName: "${student.firstName} ${student.lastName}"),
                   const SizedBox(height: 20),
                   _SearchRoomsButton(),
                   const SizedBox(height: 20),
@@ -86,9 +85,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
 }
 
 class _ProfileImage extends StatefulWidget {
-  String urlImage;
+  final String urlImage;
 
-  _ProfileImage({
+  const _ProfileImage({
     required this.urlImage
   });
 
@@ -101,24 +100,33 @@ class _ProfileImageState extends State<_ProfileImage> {
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundImage: NetworkImage(
-        widget.urlImage
-        //"https://th.bing.com/th/id/OIP.cf140NJe-x3ltcL-d1Nf9gAAAA?rs=1&pid=ImgDetMain"
-        
+        widget.urlImage        
       ),
     );
   }
 }
 
-class _Welcome extends StatelessWidget {
+class _Welcome extends StatefulWidget {
+  final String studentName;
+
+  const _Welcome({
+    required this.studentName
+  });
 
   @override
+  State<_Welcome> createState() => _WelcomeState();
+}
+
+class _WelcomeState extends State<_Welcome> {
+  @override
   Widget build(BuildContext context) {
-    return const Text(
-      "Hola! Lizet Bienvenida",
-      style: TextStyle(
+    return Text(
+      "Hola! ${widget.studentName}",
+      style: const TextStyle(
         fontSize: 25,
         fontWeight: FontWeight.bold,
       ),
+      textAlign: TextAlign.center,
     );
   }
 }
@@ -284,8 +292,8 @@ class RoomCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 child: CachedNetworkImage(
                   imageUrl: room.imageUrl,
-                  width: 100,
-                  height: 100,
+                  width: 130,
+                  height: 130,
                   fit: BoxFit.cover,
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
@@ -302,21 +310,20 @@ class RoomCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     Text(
                       room.address,
                       style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.grey,
+                        color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     Text(
                       "S/.${room.price.toStringAsFixed(2)} por hora",
                       style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
+                        color:Color.fromARGB(255, 75, 22, 182),
                       ),
                     ),
                   ],

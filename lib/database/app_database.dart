@@ -3,24 +3,38 @@ import 'package:sqflite/sqflite.dart';
 
 
 class AppDatabase{
-  final int version = 1;
-  final String databaseName = "student.db";
-  final String tableName = "students";
+  static int version = 1;
+  static String databaseName = "room.db";
+  static String tableName = "rooms";
+  static Database? _db;
 
-  Database? _db;
-  Future<Database> openDB() async {
+  static Future<Database> openDB() async {
     _db ??= await openDatabase(
         join(
           await getDatabasesPath(), 
           databaseName
         ),
+        version: version,
         onCreate: (db, version) {
-          String query = "create table $tableName (id text primary key, name text, full_name text)";
+          String query = 
+          """
+          CREATE TABLE $tableName(
+            roomId INTEGER PRIMARY KEY,
+            title TEXT,
+            description TEXT,
+            address TEXT,
+            latitude DOUBLE,
+            longitude DOUBLE,
+            price DOUBLE,
+            nearUniversities TEXT, 
+            arrenderId INTEGER,
+            imageUrl TEXT
+          )
+          """;
           db.execute(query);
         },
-        version: version
       );
 
-      return _db as Database;
+    return _db as Database;
   }
 }

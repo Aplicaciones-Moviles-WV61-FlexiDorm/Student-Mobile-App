@@ -53,4 +53,31 @@ class Room{
     );
   }
 
+  Map<String, dynamic> toMap(){
+    return {
+      "roomId": roomId,
+      "title": title,
+      "description": description,
+      "address": address,
+      "imageUrl": imageUrl,
+      "price": price,
+      "nearUniversities": nearUniversities,
+      "latitude": latitude,
+      "longitude": longitude,
+      "arrenderId": arrenderId
+    };
+  }
+
+  Room.fromMap(Map<String, dynamic> map)
+    : roomId = map['roomId'],
+      title = map['title'],
+      description = map['description'],
+      address = map['address'],
+      imageUrl = map['imageUrl'],
+      price = map['price'],
+      nearUniversities = map['nearUniversities'],
+      latitude = map['latitude'],
+      longitude = map['longitude'],
+      arrenderId = map['arrenderId'];
+
 }
