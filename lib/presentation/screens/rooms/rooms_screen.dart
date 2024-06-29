@@ -1,11 +1,12 @@
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
+import 'package:flexidorm_student_app/presentation/providers/location_provider.dart';
 import 'package:flexidorm_student_app/presentation/providers/room_provider.dart';
 import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
-import 'package:flexidorm_student_app/presentation/widgets/custom_textfield_button.dart';
-//import 'package:flexidorm_student_app/services/student_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -18,14 +19,26 @@ class RoomsScreen extends StatefulWidget {
 }
 
 class _RoomsScreenState extends State<RoomsScreen> {
-  //late Future<List<Room>> roomsFuture;
+  List<Room> _filteredRooms = [];
+
 
   @override
   void initState() {
     super.initState();
-    //_roomsFuture = StudentService().getRooms();
     final roomProvider = Provider.of<RoomProvider>(context, listen: false);
     roomProvider.fetchRooms();
+  }
+
+  void _searchRooms(String query) {
+    final roomProvider = Provider.of<RoomProvider>(context, listen: false);
+    setState(() {
+      _filteredRooms = roomProvider.rooms.where((room) {
+      return room.title.toLowerCase().contains(query.toLowerCase()) ||
+          room.description.toLowerCase().contains(query.toLowerCase()) ||
+          room.address.toLowerCase().contains(query.toLowerCase()) || 
+          room.price.toString().contains(query.toLowerCase());
+      }).toList();
+    });
   }
 
   @override
@@ -51,7 +64,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 children: [
                   _Welcome(studentName: "${student.firstName} ${student.lastName}"),
                   const SizedBox(height: 20),
-                  _SearchRoomsButton(),
+                  _SearchRoomsButton(onSearch: _searchRooms),
                   const SizedBox(height: 20),
                   _CarouselRooms(),
                   const SizedBox(height: 20),
@@ -63,9 +76,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
                         return const Center(child: CircularProgressIndicator());
                       } else {
                         return Column(
-                          children: roomProvider.rooms
-                              .map((room) => RoomCard( room: room))
-                              .toList(),
+                          children: _filteredRooms.isNotEmpty
+                            ? _filteredRooms.map((room) => RoomCard(room: room)).toList()
+                            : roomProvider.rooms.map((room) => RoomCard(room: room)).toList()
                         );
                       }
                     },
@@ -128,27 +141,40 @@ class _WelcomeState extends State<_Welcome> {
 }
 
 class _SearchRoomsButton extends StatefulWidget {
+  final Function(String) onSearch;
+
+  const _SearchRoomsButton({required this.onSearch});
+
   @override
   State<_SearchRoomsButton> createState() => _SearchRoomsButtonState();
 }
 
 class _SearchRoomsButtonState extends State<_SearchRoomsButton> {
+  final TextEditingController _controller = TextEditingController();
+  String _search = "";
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
-    String _room = "";
-
-    return CustomTextfieldButton(
-      icon: const Icon(Icons.search_rounded),
-      labelText: "Buscar habitaciones",
-      borderRadius: 20.0,
-      borderColor: const Color.fromARGB(255, 117, 52, 246),
+  
+    return TextField(
       controller: _controller,
+      decoration:  const InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderSide: BorderSide(
+            color: Color.fromARGB(255, 117, 52, 246),
+            style: BorderStyle.solid
+          ),
+        ),
+        hintText: "Buscar habitaciones",
+      ),
       onChanged: (value) {
         setState(() {
-          _room = value;
+          _search = value;
         });
-      },
+        widget.onSearch(_search);
+      }
     );
   }
 }
@@ -158,35 +184,63 @@ class _CarouselRooms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locationProvider = Provider.of<LocationProvider>(context);
+    final roomProvider = Provider.of<RoomProvider>(context);
 
-    List<Room> rooms = [
-      Room.carrousel(
-        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
-        title: 'Habitación acogedora',
-        address: "Lima, Peru",
-      ),
-      Room.carrousel(
-        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
-        title: 'Suite de lujo',
-        address: "Lima, Peru",
-      ),
-      Room.carrousel(
-        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
-        title: 'Suite de lujo',
-        address: "Lima, Peru",
-      ),
-      Room.carrousel(
-        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
-        title: 'Habitacion en San Isidro',
-        address: "Lima, Peru",
-      ),
-      Room.carrousel(
-        imageUrl: "https://i.postimg.cc/6ppVLZCf/room1.jpg",
-        title: 'Suite de lujo',
-        address: "Lima, Peru",
-      ),
-    ];
+    if(locationProvider.currentPosition == null || roomProvider.rooms.isEmpty) {
+      return const Center(
+        child: Text("No se encontraron habitaciones cercanas"),
+      );
+    }
 
+    List<RoomWithDistance> roomsWithDistance = [];
+
+    double _toRadians(double deg) {
+      return deg * pi / 180;
+    }
+
+    //Calcular la distancia entre la ubicación del estudiante y la ubicación de cada habitación
+    double _calculateDistance(double latitude1, double longitude1, double latitude2, double longitude2) {
+    const R = 6371; // Radius of the earth in km
+    double dLat = _toRadians(latitude2 - latitude1);
+    double dLon = _toRadians(longitude2 - longitude1);
+    double lat1Rad = _toRadians(latitude1);
+    double lat2Rad = _toRadians(latitude2);
+
+    double a = sin(dLat / 2) * sin(dLat / 2) + sin(dLon / 2) * sin(dLon / 2) * cos(lat1Rad) * cos(lat2Rad);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    double distance = R * c;
+
+    return distance;
+  }
+
+    
+    roomProvider.rooms.forEach((room) {
+      double distance = _calculateDistance(
+        locationProvider.currentPosition!.latitude,
+        locationProvider.currentPosition!.longitude,
+        room.latitude,
+        room.longitude
+      );
+
+      RoomWithDistance roomWithDistance = RoomWithDistance(
+        roomId: room.roomId,
+        title: room.title,
+        description: room.description,
+        address: room.address,
+        imageUrl: room.imageUrl,
+        price: room.price,
+        nearUniversities: room.nearUniversities,
+        latitude: room.latitude,
+        longitude: room.longitude,
+        arrenderId: room.arrenderId,
+        distance: distance
+      );
+
+      roomsWithDistance.add(roomWithDistance);
+    });
+
+    roomsWithDistance.sort((a, b) => a.distance.compareTo(b.distance));
 
     return CarouselSlider(
       options: CarouselOptions(
@@ -195,7 +249,7 @@ class _CarouselRooms extends StatelessWidget {
         enlargeCenterPage: true,
         viewportFraction: 0.6,
       ),
-      items: rooms.map((room) {
+      items: roomsWithDistance.take(5).map((room) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -218,14 +272,6 @@ class _CarouselRooms extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          room.description,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                         const SizedBox(height: 5.0),
                         Text(
                           room.title,

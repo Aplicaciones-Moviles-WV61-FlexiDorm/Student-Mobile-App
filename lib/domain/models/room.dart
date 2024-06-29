@@ -81,3 +81,32 @@ class Room{
       arrenderId = map['arrenderId'];
 
 }
+
+class RoomWithDistance extends Room {
+  double distance;
+
+  RoomWithDistance({
+    required int roomId,
+    required String title,
+    required String description,
+    required String address,
+    required String imageUrl,
+    required double price,
+    required String nearUniversities,
+    required double latitude,
+    required double longitude,
+    required int arrenderId,
+    this.distance = 0.0,
+  }) : super(
+          roomId: roomId,
+          title: title,
+          description: description,
+          address: address,
+          imageUrl: imageUrl,
+          price: price,
+          nearUniversities: nearUniversities,
+          latitude: latitude,
+          longitude: longitude,
+          arrenderId: arrenderId,
+        );
+}

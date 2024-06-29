@@ -64,7 +64,6 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap> with SingleTick
   void initState() {
     _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
     _animationController.repeat(reverse: true);
-    _animationController.forward();
     super.initState();
   }
 

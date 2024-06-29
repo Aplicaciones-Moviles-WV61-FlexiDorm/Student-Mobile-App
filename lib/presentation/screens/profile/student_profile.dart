@@ -36,6 +36,14 @@ class StudentProfile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Perfil"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              context.go("/settings");
+            },
+          )
+        ],
       ),
       body: FutureBuilder<Student?>(
         future: getStudent(),
