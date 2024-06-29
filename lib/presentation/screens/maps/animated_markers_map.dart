@@ -1,6 +1,8 @@
 import 'package:flexidorm_student_app/domain/models/room.dart';
+import 'package:flexidorm_student_app/presentation/screens/maps/selected_marker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,9 +26,10 @@ class AnimatedMarkersMap extends StatefulWidget {
   State<AnimatedMarkersMap> createState() => _AnimatedMarkersMapState();
 }
 
-class _AnimatedMarkersMapState extends State<AnimatedMarkersMap> {
+class _AnimatedMarkersMapState extends State<AnimatedMarkersMap> with SingleTickerProviderStateMixin{
   final _pageController = PageController();
   int _selectedIndex = 0;
+  late final AnimationController _animationController;
 
   List<Marker> _buildMarkers() {
     final _markerList = <Marker>[];
@@ -47,15 +50,28 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap> {
                 print("Selected: ${room.title}");
               });
             },
-            child: _LocationMarker(
-              selected: _selectedIndex == i
-            ),
+            child: _selectedIndex == i 
+              ? SelectedMarker(animation: _animationController)
+              : _LocationMarker(selected: _selectedIndex == i)
           )
         )
       );
     }
-
     return _markerList;
+  }
+
+  @override
+  void initState() {
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _animationController.repeat(reverse: true);
+    _animationController.forward();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadMap() async {
@@ -153,23 +169,6 @@ class _LocationMarker extends StatelessWidget {
   }
 }
 
-class _MyLocationMarker extends StatelessWidget {
-  const _MyLocationMarker({
-    super.key
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: const BoxDecoration(
-        color: markerColor, 
-        shape: BoxShape.circle
-      ),
-    );
-  }
-}
 
 class _MapItemDetails extends StatelessWidget {
   final Room room;
@@ -229,7 +228,7 @@ class _MapItemDetails extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          room.nearUniversities,
+                          "Universidades cercanas:\n${room.nearUniversities}",
                           style: _styleAddress,
                         ),
                       ],
@@ -240,7 +239,9 @@ class _MapItemDetails extends StatelessWidget {
             ),
             MaterialButton(
               padding: EdgeInsets.zero,
-              onPressed: () { },
+              onPressed: () {
+                context.go("/reserve-rooms", extra: room);
+              },
               color: markerColor,
               elevation: 6,
               child: const Text(
