@@ -44,13 +44,28 @@ FLEXIDORM es una aplicación móvil multiplataforma desarrollada con Flutter, di
 </td> 
 <td><img src="https://i.postimg.cc/Qx1CKDyR/register1.jpg" alt="Pantalla de Registro" width="200"/>
 </td>
- <td><img src="https://i.postimg.cc/C1Q78S9y/home.jpg" alt="Pantalla Principal" width="200"/></td> 
+ <td><img src="https://i.postimg.cc/j5XSq8qp/Home-With-Location.jpg" alt="Pantalla Principal" width="200"/></td> 
  </tr> 
- <tr> <td><img src="https://i.postimg.cc/LXXvhnCB/room-details.jpg" alt="Detalle de Habitación" width="200"/>
+  </tr> 
+ <tr> <td><img src="https://i.postimg.cc/h42tH35x/Home-Without-Location.jpg" alt="Pantalla principal sin ubicación" width="200"/>
  </td> 
- <td><img src="https://i.postimg.cc/wBF06hVj/reserve.jpg" alt="Reserva de Habitación" width="200"/>
+ <td><img src="https://i.postimg.cc/LXXvhnCB/room-details.jpg" alt="Detalle de la habitación" width="200"/>
  </td>
- <td><img src="https://i.postimg.cc/3w3t5L2q/profile.jpg" alt="Perfil de Usuario" width="200"/></td>
+ <td><img src="https://i.postimg.cc/QCdxFpHH/maps-Rooms.jpg" alt="Mapa" width="200"/></td>
+ </tr> 
+ </tr> 
+ <tr> <td><img src="https://i.postimg.cc/wBF06hVj/reserve.jpg" alt="Reservar" width="200"/>
+ </td> 
+ <td><img src="https://i.postimg.cc/ncMhZYyW/favorites-Rooms.jpg" alt="Habitaciones Favoritas" width="200"/>
+ </td>
+ <td><img src="https://i.postimg.cc/sxHf7vhK/Reserved-Rooms.jpg" alt="Habitaciones reservadas" width="200"/></td>
+ </tr> 
+  </tr> 
+ <tr> <td><img src="https://i.postimg.cc/3w3t5L2q/profile.jpg" alt="Perfil" width="200"/>
+ </td> 
+ <td><img src="https://i.postimg.cc/054XM0q6/edit-profile.jpg" alt="Editar" width="200"/>
+ </td>
+ <td><img src="https://i.postimg.cc/RV8V0J9Z/settings.jpg" alt="Configuraciones" width="200"/></td>
  </tr> 
  </table>
 
