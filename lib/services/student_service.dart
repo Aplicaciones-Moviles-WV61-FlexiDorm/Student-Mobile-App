@@ -1,3 +1,4 @@
+import 'package:flexidorm_student_app/domain/models/reservation.dart';
 import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
@@ -139,6 +140,66 @@ class StudentService{
       
     } else {
       return false;
+    }
+  }
+
+  Future<List<Reservation>> getReservationsByStudent(String studentId) async {
+    List<Reservation> reservations = [];
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("jwt_token");
+
+    final url = "${baseUrl}rental/search/$studentId";
+    final headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonData = jsonDecode(response.body);
+      final reservationData = jsonData["data"] as List<dynamic>;
+
+      for (var data in reservationData) {
+        reservations.add(Reservation.fromJson(data));
+      }
+    }
+
+    return reservations;
+  }
+
+  Future<Room> fetchRoom(int roomId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("jwt_token");
+
+    final url = "${baseUrl}room/getRoomsByRoomId/$roomId";
+    final headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonData = jsonDecode(response.body);
+      final roomData = jsonData["data"] as List<dynamic>;
+
+      if (roomData.isNotEmpty) {
+        final data = roomData[0];
+        final roomImageUrl = data["imageUrl"];
+        final imageUrlResponse = await http.head(Uri.parse(roomImageUrl));
+
+        if (imageUrlResponse.statusCode == 200) {
+          return Room.fromJson(data);
+        } else {
+          throw Exception("Error al cargar la imagen: $roomImageUrl");
+        }
+      } else {
+        throw Exception("No se encontró la habitación con ID $roomId");
+      }
+    } else {
+      throw Exception("Error al obtener la habitación");
     }
   }
 

@@ -32,24 +32,22 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-
             ),
             label: "Home"
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite,
-
             ),
             label: "Favorites"
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
-
             ),
             label: "Profile"
           ),
+          
         ],
         currentIndex: homeProvider.currentIndex,
         onTap: (value) {

@@ -5,6 +5,7 @@ import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/presentation/providers/location_provider.dart';
 import 'package:flexidorm_student_app/presentation/providers/room_provider.dart';
 import 'package:flexidorm_student_app/presentation/providers/student_provider.dart';
+import 'package:flexidorm_student_app/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -67,9 +68,20 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   _SearchRoomsButton(onSearch: _searchRooms),
                   const SizedBox(height: 20),
                   _CarouselRooms(),
-                  const SizedBox(height: 20),
-
-                  //FutureBuilder<List<Room>>
+                  const SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomElevatedButton(
+                        text: "Ver habitaciones reservadas",
+                        backgroundColor: const Color.fromARGB(255, 138, 93, 229),
+                        onPressed: () => context.go("/reservations"),
+                        widthButton: 200,
+                        fontSize: 12,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
                   Consumer<RoomProvider>(
                     builder: (context, roomProvider, child) {
                       if (roomProvider.rooms.isEmpty) {

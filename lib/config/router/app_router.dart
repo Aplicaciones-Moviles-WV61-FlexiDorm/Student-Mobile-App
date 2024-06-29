@@ -1,6 +1,7 @@
 import 'package:flexidorm_student_app/domain/models/room.dart';
 import 'package:flexidorm_student_app/domain/models/student.dart';
 import 'package:flexidorm_student_app/presentation/screens/reservations/reserve_rooms.dart';
+import 'package:flexidorm_student_app/presentation/screens/reservations/show_reservation_list.dart';
 import 'package:flexidorm_student_app/presentation/screens/screens.dart';
 import 'package:flexidorm_student_app/presentation/screens/settings/settings_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -75,6 +76,12 @@ final appRouter = GoRouter(
       path: "/settings",
       name: SettingsScreen.name,
       builder: (context, state) => const SettingsScreen(),
+    ),
+
+    GoRoute(
+      path: "/reservations",
+      name: ShowReservationList.name,
+      builder: (context, state) => const ShowReservationList(),
     ),
 
   ]
